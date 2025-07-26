@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
+        <!--  All snippets are MIT license http://bootdey.com/license -->
+        <title>My Profile </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style type="text/css">
+            body{
+                margin-top:20px;
+                background:#F0F8FF;
+            }
+            .card {
+                margin-bottom: 1.5rem;
+                box-shadow: 0 1px 15px 1px rgba(52,40,104,.08);
+            }
+            .card {
+                position: relative;
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                min-width: 0;
+                word-wrap: break-word;
+                background-color: #fff;
+                background-clip: border-box;
+                border: 1px solid #e5e9f2;
+                border-radius: .2rem;
+            }
+            .card-header:first-child {
+                border-radius: calc(.2rem - 1px) calc(.2rem - 1px) 0 0;
+            }
+            .card-header {
+                border-bottom-width: 1px;
+            }
+            .card-header {
+                padding: .75rem 1.25rem;
+                margin-bottom: 0;
+                color: inherit;
+                background-color: #fff;
+                border-bottom: 1px solid #e5e9f2;
+            }
+            .image-upload-box {
+                border: 2px dashed #ccc;
+                border-radius: 8px;
+                text-align: center;
+                padding: 30px 10px;
+                cursor: pointer;
+                transition: 0.3s;
+                height: 150px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #777;
+                font-weight: 500;
+            }
+
+            .image-upload-box:hover {
+                background-color: #f9f9f9;
+                border-color: #999;
+            }
+
+            .image-upload-box input[type="file"] {
+                display: none;
+            }
+        </style>
+    </head>
+
+    <body onload="loadData(); loadProductData();">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+        <div class="container p-0" >
+            <h1 class="h3 mb-3">Settings</h1>
+            <div class="row">
+                <div class="col-md-5 col-xl-4">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Profile Settings</h5>
+                        </div>
+
+                        <div class="list-group list-group-flush" role="tablist">
+                            <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account" role="tab">
+                                Account
+                            </a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#password" role="tab">
+                                Password
+                            </a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#addressTab" role="tab">
+                                Address
+                            </a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#addProductTab" role="tab">
+                                Add Product
+                            </a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#" role="tab">
+                                Product Listings
+                            </a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#" role="tab">
+                                Orders
+                            </a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#" onclick="signOut();" role="tab">
+                                Log out
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7 col-xl-8">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="account" role="tabpanel">
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-actions float-right">
+                                        <div class="dropdown show">
+                                            <a href="#" data-toggle="dropdown" data-display="static">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal align-middle">
+                                                <circle cx="12" cy="12" r="1"></circle>
+                                                <circle cx="19" cy="12" r="1"></circle>
+                                                <circle cx="5" cy="12" r="1"></circle>
+                                                </svg>
+                                            </a>
+
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5 class="card-title mb-0">Public info</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label for="inputUsername">Username</label>
+                                                    <input type="text" class="form-control" id="username" placeholder="Username">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputUsername">An Elegance Watches Customer Since</label>
+                                                    <textarea rows="2" class="form-control" id="since" placeholder="Membership Since"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="text-center">
+                                                    <img alt="Andrew Jones" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle img-responsive mt-2" width="128" height="128">
+                                                    <div class="mt-2">
+                                                        <span class="btn btn-primary"><i class="fa fa-upload"></i></span>
+                                                    </div>
+                                                    <small>For best results, use an image at least 128px by 128px in .jpg format</small>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--<button type="submit" class="btn btn-primary" onclick="saveChanges();">Save changes</button>-->
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-actions float-right">
+                                        <div class="dropdown show">
+                                            <a href="#" data-toggle="dropdown" data-display="static">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal align-middle">
+                                                <circle cx="12" cy="12" r="1"></circle>
+                                                <circle cx="19" cy="12" r="1"></circle>
+                                                <circle cx="5" cy="12" r="1"></circle>
+                                                </svg>
+                                            </a>
+
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5 class="card-title mb-0">Private info</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form >
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="inputFirstName">First name</label>
+                                                <input type="text" class="form-control" id="firstName" placeholder="First name">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="inputLastName">Last name</label>
+                                                <input type="text" class="form-control" id="lastName" placeholder="Last name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail4">Email</label>
+                                            <input type="email" class="form-control" id="email" placeholder="Email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputAddress">Address</label>
+                                            <input type="text" class="form-control" id="lineOne" placeholder="1234 Main St">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputAddress2">Address 2</label>
+                                            <input type="text" class="form-control" id="lineTwo" placeholder="Apartment, studio, or floor">
+                                        </div>
+                                        <div class="form-row">
+
+                                            <div class="form-group col-md-4">
+                                                <label for="inputState">City</label>
+                                                <select id="citySelect" class="form-control">
+                                                    <option value="0">Choose...</option>
+
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <label for="inputZip">Postal Code</label>
+                                                <input type="text" class="form-control" id="postalCode">
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary" onclick="saveChanges();">Save changes</button>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!<!--  password section -->
+                        <div class="tab-pane fade" id="password" role="tabpanel">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Password</h5>
+
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="inputPasswordCurrent">Current password</label>
+                                            <input type="text" id="currentPassword" class="form-control" >
+                                            <small><a href="#">Forgot your password?</a></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPasswordNew">New password</label>
+                                            <input type="password" class="form-control" id="newPassword">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPasswordNew2">Verify password</label>
+                                            <input type="password" class="form-control" id="confirmPassword">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!<!--  address section -->
+                        <div class="tab-pane fade" id="addressTab" role="tabpanel">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Address</h5>
+                                    <ul class="address-details" id="addressUL"></ul>
+
+                                    <!-- <ul class="address-details" id="addressUL">
+                                         <li id="addName">Name: Name</li>
+                                         <li id="addEmail">Email:  example@email.com</li>
+                                         <li id="contact">Phone:  Phone Number</li>
+                                         <li id="address" class="mt--30"></li>
+                                     </ul>-->
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!<!--  product section -->
+                        <div class="tab-pane fade" id="addProductTab" role="tabpanel">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <h4 class="mb-3">Add New Watch</h4>
+                                    <p id="watch-message" class="text-danger"></p>
+
+                                    <form class="account-details-form">
+                                        <div class="row">
+
+                                            <!-- Brand -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="brand">Brand</label>
+                                                    <select id="brand" onchange="loadModels();" class="form-control">
+                                                        <option value="0">Select Brand</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Gender -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="gender">Gender</label>
+                                                    <select id="gender" onchange="loadModels();" class="form-control">
+                                                        <option value="0">Select Gender</option>
+                                                        <option value="male">Male</option>
+                                                        <option value="female">Female</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Model -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="model">Model</label>
+                                                    <select id="model" class="form-control">
+                                                        <option value="0">Select Model</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Title -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="title">Product Title</label>
+                                                    <input type="text" id="product-title" class="form-control" placeholder="Enter product title">
+                                                </div>
+                                            </div>
+
+                                            <!-- Made Year -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="made-year">Made Year</label>
+                                                    <input type="number" id="made-year" class="form-control" placeholder="e.g. 2023" min="1900" max="2099">
+                                                </div>
+                                            </div>
+
+                                            <!-- Description -->
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="description">Product Description</label>
+                                                    <textarea id="description" class="form-control" rows="3" placeholder="Enter watch description"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <!-- Color -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="color">Color</label>
+                                                    <select id="color" class="form-control">
+                                                        <option value="0">Select Color</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Condition -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="condition">Condition</label>
+                                                    <select id="condition" class="form-control">
+                                                        <option value="0">Select Condition</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Quantity -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="qty">Quantity</label>
+                                                    <input type="number" id="qty" class="form-control" min="1" value="1">
+                                                </div>
+                                            </div>
+
+                                            <!-- Price -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="price">Price (LKR)</label>
+                                                    <input type="text" id="price" class="form-control" pattern="^\d+(\.\d{2})?$" placeholder="e.g. 150000.00">
+                                                </div>
+                                            </div>
+
+                                            <!-- Image Uploads -->
+                                            
+                                            <div class="col-md-4">
+                                                <label class="image-upload-box" onclick="document.getElementById('img1').click();">
+                                                    Upload Image 1
+                                                    <input type="file" id="img1" accept="image/*">
+                                                </label>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="image-upload-box" onclick="document.getElementById('img2').click();">
+                                                    Upload Image 2
+                                                    <input type="file" id="img2" accept="image/*">
+                                                </label>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="image-upload-box" onclick="document.getElementById('img3').click();">
+                                                    Upload Image 3
+                                                    <input type="file" id="img3" accept="image/*">
+                                                </label>
+                                            </div>
+
+                                            <!-- Add Button -->
+                                            <div class="col-md-4 align-self-end">
+                                                <div class="form-group mb-0">
+                                                    
+                                                    <button type="button" class="btn btn-primary" onclick="saveProduct();" >Add Watch</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </form>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/js/sign-out.js"></script>
+        <script src="assets/js/my-account.js"></script>
+        <script src="assets/js/product-listing.js"></script>
+
+        <script> window.addEventListener("DOMContentLoaded", function () {
+                                                            loadData();
+                                                            loadProductData();
+                                                        });</script>
+
+    </body>
+</html>
