@@ -73,7 +73,7 @@ public class loadProductData extends HttpServlet {
         responseObject.add("modelList", gson.toJsonTree(modelList));
         responseObject.add("qualityList", gson.toJsonTree(qualityList));
         responseObject.add("colorList", gson.toJsonTree(colorList));
-        responseObject.add("storageList", gson.toJsonTree(genderList));
+        responseObject.add("genderList", gson.toJsonTree(genderList));
         responseObject.add("statusList", gson.toJsonTree(statusList));
 
         responseObject.addProperty("status", true);

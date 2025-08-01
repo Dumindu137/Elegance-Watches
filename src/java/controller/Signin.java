@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
@@ -28,7 +29,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author user
  */
-@WebServlet(name = "Signin", urlPatterns = {"/Signin"})
+@WebServlet(name = "Signin", urlPatterns = {"/Signinw"})
 public class Signin extends HttpServlet {
 
     @Override
@@ -50,8 +51,9 @@ public class Signin extends HttpServlet {
         } else if (password.isEmpty()) {
             responseObject.addProperty("message", "Password can not be empty");
         } else {
-            SessionFactory sf = HibernateUtil.getSessionFactory();
-            Session s = sf.openSession();
+//            SessionFactory sf = HibernateUtil.getSessionFactory();
+//            Session s = sf.openSession();
+            Session s = HibernateUtil.getSessionFactory().openSession();
 
             Criteria c = s.createCriteria(User.class);
 
@@ -69,7 +71,7 @@ public class Signin extends HttpServlet {
 
                 HttpSession ses = req.getSession();
                 if (!u.getVerification().equals("Verified")) {
-                    
+
                     //session management
                     ses.setAttribute("email", email);
                     //session management

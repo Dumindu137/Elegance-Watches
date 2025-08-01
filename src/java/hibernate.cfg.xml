@@ -8,15 +8,16 @@
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">Java_2001#</property>
         <property name="hibernate.show_sql">true</property>
-        <mapping class="hibernate.User" />
-        <mapping class="hibernate.City" />
-        <mapping class="hibernate.Address" />
-        <mapping class="hibernate.Brand" />
-        <mapping class="hibernate.Model" />
-        <mapping class="hibernate.Quality" />
-        <mapping class="hibernate.Color" />
-        <mapping class="hibernate.Storage" />
-        <mapping class="hibernate.Gender" />
+        <mapping class="hibernate.User"/>
+        <mapping class="hibernate.City"/>
+        <mapping class="hibernate.Address"/>
+        <mapping class="hibernate.Brand"/>
+        <mapping class="hibernate.Model"/>
+        <mapping class="hibernate.Quality"/>
+        <mapping class="hibernate.Color"/>    
+        <mapping class="hibernate.Gender"/>
+        <mapping class="hibernate.Product"/>
+        <mapping class="hibernate.Status"/>
     </session-factory>
 </hibernate-configuration>
 

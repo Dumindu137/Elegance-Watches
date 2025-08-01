@@ -20,12 +20,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import model.Util;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import javax.servlet.http.Part;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.io.File;
 
 /**
  *
@@ -44,7 +49,6 @@ public class MyAccount extends HttpServlet {
             responseObject.addProperty("lastName", user.getLast_name());
             responseObject.addProperty("password", user.getPassword());
             responseObject.addProperty("email", user.getEmail());
-            
 
             //responseObject.addProperty("username", user.getFirst_name());
             String since = new SimpleDateFormat("MMM yyyy").format(user.getCreated_at());
@@ -121,10 +125,10 @@ public class MyAccount extends HttpServlet {
                     address.setCity(city);
 
                     s.merge(u1);
-                    s.saveOrUpdate(address); // ✅ Better than save()
+                    s.saveOrUpdate(address);
 
                     ses.setAttribute("user", u1); // update session
-                    tx.commit(); // ✅ Commit changes
+                    tx.commit(); //  Commit changes
                     responseObject.addProperty("status", true);
                     responseObject.addProperty("message", "User profile details updated successfully!");
                 }

@@ -34,6 +34,10 @@ public class Model implements Serializable {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
+    @ManyToOne
+    @JoinColumn(name = "Gender_id")
+    private Gender gender;
+
     /**
      * @return the id
      */
@@ -74,5 +78,19 @@ public class Model implements Serializable {
      */
     public void setBrand(Brand brand) {
         this.brand = brand;
+    }
+
+    /**
+     * @return the gender
+     */
+    public Gender getGender() {
+        return gender;
+    }
+
+    /**
+     * @param gender the gender to set
+     */
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }

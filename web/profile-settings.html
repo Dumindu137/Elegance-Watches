@@ -68,7 +68,7 @@
         </style>
     </head>
 
-    <body onload="loadData(); loadProductData();">
+    <body>
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
         <div class="container p-0" >
@@ -148,10 +148,17 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="text-center">
-                                                    <img alt="Andrew Jones" src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle img-responsive mt-2" width="128" height="128">
+                                                    <img id="profile-image" alt="Profile" src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                                         class="rounded-circle img-responsive mt-2" width="128" height="128">
+
+                                                    <input type="file" id="imageUpload" name="image5" accept="image/*" style="display: none;">
+
                                                     <div class="mt-2">
-                                                        <span class="btn btn-primary"><i class="fa fa-upload"></i></span>
+                                                        <button type="button" class="btn btn-primary" onclick="triggerImageUpload('imageUpload')">
+                                                            <i class="fa fa-upload"></i> Upload
+                                                        </button>
                                                     </div>
+
                                                     <small>For best results, use an image at least 128px by 128px in .jpg format</small>
                                                 </div>
                                             </div>
@@ -277,10 +284,10 @@
                         <!<!--  product section -->
                         <div class="tab-pane fade" id="addProductTab" role="tabpanel">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" >
 
                                     <h4 class="mb-3">Add New Watch</h4>
-                                    <p id="watch-message" class="text-danger"></p>
+                                    <p id="message" class="text-danger"></p>
 
                                     <form class="account-details-form">
                                         <div class="row">
@@ -301,9 +308,8 @@
                                                     <label for="gender">Gender</label>
                                                     <select id="gender" onchange="loadModels();" class="form-control">
                                                         <option value="0">Select Gender</option>
-                                                        <option value="male">Male</option>
-                                                        <option value="female">Female</option>
                                                     </select>
+
                                                 </div>
                                             </div>
 
@@ -321,7 +327,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="title">Product Title</label>
-                                                    <input type="text" id="product-title" class="form-control" placeholder="Enter product title">
+                                                    <input type="text" id="title" class="form-control" placeholder="Enter product title">
                                                 </div>
                                             </div>
 
@@ -378,32 +384,32 @@
                                             </div>
 
                                             <!-- Image Uploads -->
-                                            
+
                                             <div class="col-md-4">
-                                                <label class="image-upload-box" onclick="document.getElementById('img1').click();">
-                                                    Upload Image 1
-                                                    <input type="file" id="img1" accept="image/*">
+                                                <label class="image-upload-box" for="img1">
+                                                    <span id="img1-text">Upload Image 1</span>
+                                                    <input type="file" id="img1" name="image1" accept="image/*" onchange="updateImageLabel('img1', 'img1-text');">
                                                 </label>
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label class="image-upload-box" onclick="document.getElementById('img2').click();">
-                                                    Upload Image 2
-                                                    <input type="file" id="img2" accept="image/*">
+                                                <label class="image-upload-box"  for="img2">
+                                                    <span id="img2-text">Upload Image 2</span>
+                                                    <input type="file" id="img2" name="image2" accept="image/*" onchange="updateImageLabel('img2', 'img2-text');">
                                                 </label>
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label class="image-upload-box" onclick="document.getElementById('img3').click();">
-                                                    Upload Image 3
-                                                    <input type="file" id="img3" accept="image/*">
+                                                <label class="image-upload-box"  for="img3">
+                                                    <span id="img3-text">Upload Image 3</span>
+                                                    <input type="file" id="img3" name="image3" accept="image/*" onchange="updateImageLabel('img3', 'img3-text');">
                                                 </label>
                                             </div>
 
                                             <!-- Add Button -->
                                             <div class="col-md-4 align-self-end">
                                                 <div class="form-group mb-0">
-                                                    
+
                                                     <button type="button" class="btn btn-primary" onclick="saveProduct();" >Add Watch</button>
                                                 </div>
                                             </div>
