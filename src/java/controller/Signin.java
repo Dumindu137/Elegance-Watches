@@ -11,7 +11,6 @@ import hibernate.HibernateUtil;
 import hibernate.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javafx.scene.control.Alert;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

@@ -20,7 +20,7 @@ import javax.mail.internet.MimeMessage;
 public class Mail {
 
     private static final String APP_EMAIL = "dumindusankalpa137@gmail.com";
-    private static final String APP_PASSWORD = "utmnsgcxflooaoyg";
+    private static final String APP_PASSWORD = "vwap zhnz even qrtm";
 
     public static void sendMail(String email, String subject, String htmlContent) {
 
@@ -45,7 +45,7 @@ public class Mail {
             message.setContent(htmlContent, "text/html");
 
             Transport.send(message);
-            System.out.println("✅ Email sent to " + email);
+            System.out.println(" Email sent to " + email);
 
         } catch (MessagingException e) {
             e.printStackTrace(); // 🔍 See actual error

@@ -148,20 +148,21 @@ function updateImageLabel(inputId, textId) {
     }
 }
 function triggerImageUpload(inputId) {
-    const fileInput = document.getElementById(inputId);
-    fileInput.click();
-
-    fileInput.onchange = function (event) {
-        const file = event.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                const imgElement = document.getElementById('profile-image');
-                imgElement.src = e.target.result;
-            }
-
-            reader.readAsDataURL(file);
-        }
-    }
+//    const fileInput = document.getElementById(inputId);
+//    fileInput.click();
+//
+//    fileInput.onchange = function (event) {
+//        const file = event.target.files[0];
+//        if (file && file.type.startsWith('image/')) {
+//            const reader = new FileReader();
+//
+//            reader.onload = function (e) {
+//                const imgElement = document.getElementById('profile-image');
+//                imgElement.src = e.target.result;
+//            }
+//
+//            reader.readAsDataURL(file);
+//        }
+//    }
+    document.getElementById(inputId).click();
 }

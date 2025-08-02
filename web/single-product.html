@@ -1,0 +1,125 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Smart Trade</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
+
+    <!-- Tailwind CSS for new design -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gradient-to-br from-gray-100 to-white text-gray-900 font-inter" onload="loadData();">
+    <header class="sticky top-0 bg-white shadow-lg z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold">Elegance Watches</h1>
+            <nav>
+                <!-- Add navigation links if needed -->
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-12">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 xl:grid-cols-2 gap-12">
+            <!-- Images Column -->
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <img id="image1" class="rounded-xl shadow-md" src="assets/images/product/product-01.png">
+                    <img id="image2" class="rounded-xl shadow-md" src="assets/images/product/product-01.png">
+                    <img id="image3" class="rounded-xl shadow-md" src="assets/images/product/product-01.png">
+                </div>
+                <div class="flex gap-3 justify-center">
+                    <img id="thumb-image1" class="w-20 h-20 object-cover rounded-lg border-2 border-gray-300" src="assets/images/product/product-01.png">
+                    <img id="thumb-image2" class="w-20 h-20 object-cover rounded-lg border-2 border-gray-300" src="assets/images/product/product-01.png">
+                    <img id="thumb-image3" class="w-20 h-20 object-cover rounded-lg border-2 border-gray-300" src="assets/images/product/product-01.png">
+                </div>
+            </div>
+
+            <!-- Product Info Column -->
+            <div class="bg-white p-8 rounded-xl shadow-xl">
+                <h2 id="product-title" class="text-3xl font-extrabold mb-4">Apple iPhone 15 Pro 256GB Brand New</h2>
+                <p class="text-sm text-gray-500 mb-2">Published On <span id="published-on">September 2, 2024</span></p>
+                <p class="text-2xl font-bold text-green-600 mb-4">Rs. <span id="product-price">350,000.00</span></p>
+
+                <ul class="space-y-2 text-sm mb-4">
+                    <li><strong>Brand:</strong> <span id="brand-name">Brand Name Here</span></li>
+                    <li><strong>Model:</strong> <span id="model-name">Model Name Here</span></li>
+                    <li><span id="product-quality">Product Condition Here</span></li>
+                    <li><strong>In stock:</strong> <span id="product-stock">5</span> Units</li>
+                </ul>
+
+                <div class="mb-4">
+                    <h6 class="font-semibold text-sm">Color</h6>
+                    <div class="mt-2">
+                        <span id="color-border" class="inline-block border-2 p-1 rounded-full">
+                            <span id="color-background" class="block w-6 h-6 rounded-full"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="font-semibold text-sm">Storage</h6>
+                    <div id="product-storage" class="inline-block bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full">128 GB</div>
+                </div>
+
+                <div class="flex items-center gap-4 mb-6">
+                    <input id="add-to-cart-qty" type="number" value="1" min="1" class="w-20 px-3 py-2 border rounded-md">
+                    <a href="#" id="add-to-cart-main" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg">Add to Cart</a>
+                    <a href="#" class="text-gray-500 hover:text-red-500"><i class="far fa-heart"></i></a>
+                </div>
+
+                <div>
+                    <h5 class="text-lg font-semibold mb-2">Description:</h5>
+                    <p id="product-description" class="text-sm text-gray-700 leading-relaxed">
+                        The iPhone 15 Pro features the first major redesign of the outer shell of the device since the iPhone 12 Pro in 2020...
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Similar Products Section -->
+        <div class="max-w-7xl mx-auto px-6 mt-16">
+            <h2 class="text-2xl font-bold mb-6">Similar Products</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="smiler-product-main">
+                <div id="similer-product" class="bg-white p-5 rounded-lg shadow hover:shadow-lg transition">
+                    <a href="#" id="similer-product-a1">
+                        <img src="assets/images/product/product-01.png" id="similer-product-image" class="w-full rounded mb-4">
+                    </a>
+                    <h5 id="similer-product-title" class="font-semibold text-lg mb-1">Apple iPhone 15 Pro 128 GB</h5>
+                    <p id="similer-product-storage" class="text-sm text-gray-500 mb-2">256 GB</p>
+                    <div id="similer-product-price" class="text-red-600 font-bold mb-2">Rs. 200,000.00</div>
+                    <div class="mb-3">
+                        <span id="similer-product-color-border" class="inline-block p-1 border rounded-full">
+                            <span id="similer-product-color-background" class="block w-4 h-4 rounded-full"></span>
+                        </span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-500 hover:text-red-600"><i class="far fa-heart"></i></a>
+                        <a href="#" id="simler-product-add-to-cart" class="text-blue-600 hover:underline">Add to Cart</a>
+                        <a href="#" id="similer-product-a2" class="text-gray-600 hover:text-blue-500"><i class="far fa-eye"></i></a>
+                    </div>
+                </div>
+                <!-- More similar product blocks can be added here -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white mt-16 py-10 border-t">
+        <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-500">
+            &copy; 2025 Smart Trade. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="assets/js/vendor/jquery.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/single-product.js"></script>
+    <script src="assets/js/notification.js"></script>
+<!--    <script src="assets/js/content-loader.js"></script>-->
+</body>
+
+</html>

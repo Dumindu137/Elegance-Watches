@@ -2,6 +2,8 @@ function loadData() {
     getUserData();
     getCityData();
 }
+//const userId = json.userId; // global
+//window.userId = userId;
 
 async function getUserData() {
     const response = await fetch("MyAccount");
@@ -10,10 +12,14 @@ async function getUserData() {
         const json = await response.json();
 
         document.getElementById("username").value = `${json.firstName} ${json.lastName}`;
-        document.getElementById("since").innerHTML = ` ${json.since}`;
+        document.getElementById("since").value = ` ${json.since}`;
         document.getElementById("firstName").value = json.firstName;
         document.getElementById("lastName").value = json.lastName;
         document.getElementById("email").value = json.email;
+
+        document.getElementById("profile-image").src = `profile-images/${json.userId}/profile.png?${Date.now()}`;
+        window.userId = json.userId;
+
 
         if (json.addressList?.length > 0) {
             const address = json.addressList[0];
@@ -99,7 +105,8 @@ async function getCityData() {
 }
 
 async function saveChanges() {
-    //newcode
+
+    console.log("saveChanges function called!");
     const firstName = document.getElementById("firstName").value;
     const lastName = document.getElementById("lastName").value;
     const lineOne = document.getElementById("lineOne").value;
@@ -109,12 +116,15 @@ async function saveChanges() {
     const currentPassword = document.getElementById("currentPassword").value;
     const newPassword = document.getElementById("newPassword").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
-//const currentPassword = "";
-//const newPassword = "";
-//const confirmPassword = "";
 
-//*********** html eke password feilds tikakk dala me profile finish krnna
-//product adding ek krnna,email not  sending blnn,signout blnn,navbar ekk danna ************
+    const saveBtn = document.getElementById("saveChangesBtn");
+    const messageDiv = document.getElementById("saveMessage");
+
+
+    // Show loading message & disable button
+    saveBtn.disabled = true;
+    messageDiv.style.color = "black";
+    messageDiv.textContent = "Saving changes...";
 
     const userDataObject = {
         firstName,
@@ -129,6 +139,10 @@ async function saveChanges() {
     };
 
     try {
+        console.log("newPassword:", newPassword);
+        console.log("confirmPassword:", confirmPassword);
+        console.log("userDataObject:", userDataObject);
+
         const response = await fetch("MyAccount", {
             method: "PUT",
             headers: {
@@ -141,15 +155,81 @@ async function saveChanges() {
         console.log("Server response:", json);
 
         if (json.status) {
+            messageDiv.style.color = "green";
+            messageDiv.textContent = "Profile data updated successfully!";
             getUserData();
         } else {
-            document.getElementById("message").innerHTML = json.message;
+            messageDiv.style.color = "red";
+            messageDiv.textContent = json.message || "Failed to update profile.";
         }
     } catch (error) {
         console.error("Save failed:", error);
-        const messageDiv = document.getElementById("message");
-        if (messageDiv) {
-            messageDiv.innerHTML = "Profile details update failed!";
-        }
+        messageDiv.style.color = "red";
+        messageDiv.textContent = "Profile update failed!";
+    } finally {
+        //hide message after 3 seconds
+        saveBtn.disabled = false;
+        setTimeout(() => {
+            messageDiv.textContent = "";
+        }, 3000);
     }
+}
+
+async function uploadProfileImage() {
+    const fileInput = document.getElementById("imageUpload");
+    const file = fileInput.files[0];
+    if (!file)
+        return;
+
+    // Preview the selected image immediately
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        document.getElementById("profile-image").src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
+    const formData = new FormData();
+    formData.append("image5", file);
+
+    try {
+        const response = await fetch("MyAccount", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.status) {
+            const img = document.getElementById("profile-image");
+            img.src = '';
+            setTimeout(() => {
+                img.src = `profile-images/${window.userId}/profile.png?` + new Date().getTime();
+            }, 50);
+
+            showMessage("Profile image uploaded successfully!", "success");
+        } else {
+            showMessage(result.message || "Upload failed.", "error");
+        }
+    } catch (err) {
+        console.error("Upload error:", err);
+        showMessage("Upload failed.", "error");
+    }
+}
+
+
+function showMessage(text, type) {
+    const msgDiv = document.getElementById("uploadMessage");
+    msgDiv.textContent = text;
+    if (type === "success") {
+        msgDiv.style.color = "green";
+    } else if (type === "error") {
+        msgDiv.style.color = "red";
+    } else {
+        msgDiv.style.color = "black";
+    }
+
+    // Optional: hide message after 3 seconds
+    setTimeout(() => {
+        msgDiv.textContent = "";
+    }, 3000);
 }

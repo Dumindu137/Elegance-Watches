@@ -11,6 +11,9 @@ import hibernate.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Mail;
+import model.SecondMail;
 import model.Util;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -53,9 +57,9 @@ public class SignUp extends HttpServlet {
             ResponseObject.addProperty("message", "Please Enter Valid Email");
         } else if (password.isEmpty()) {
             ResponseObject.addProperty("message", "Password can not be empty");
-//        } else if (!Util.isPasswordValid(password)) {
-//            ResponseObject.addProperty("message", "The Password must contain at least "
-//                    + "uppercase, lowercase, numbers, special character and to be 8 characters long !");
+        } else if (!Util.isPasswordValid(password)) {
+            ResponseObject.addProperty("message", "The Password must contain at least "
+                    + "uppercase, lowercase, numbers, special character and to be 8 characters long !");
         } else {
             Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -89,7 +93,21 @@ public class SignUp extends HttpServlet {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Mail.sendMail(email, "SmartTrade - Verification", "<h1>" + verificationCode + "</h1>");
+
+                        //Mail.sendMail(email, "Elegance Watches - Verification", "<h1>" + verificationCode + "</h1>");
+                        System.out.println("📬 Trying to send verification email to " + email);
+
+                        try {
+
+                            SecondMail.sendMail(
+                                    email,
+                                    "Elegance Watches - Email Verification",
+                                    "<div style='font-family:sans-serif'><h2>Your Verification Code</h2><p>Enter the following code to verify your email:</p><h1 style='color:#3366cc'>" + verificationCode + "</h1></div>"
+                            );
+                        } catch (MessagingException ex) {
+                            Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
                     }
                 }).start();
 
