@@ -8,6 +8,7 @@ async function loadData() {
             const json = await response.json();
             if (json.status) {
                 console.log(json);
+
                 //single-product-images
                 document.getElementById("image1").src = "product-images\\" + json.product.id + "\\image1.png";
                 document.getElementById("image2").src = "product-images\\" + json.product.id + "\\image2.png";
@@ -32,10 +33,12 @@ async function loadData() {
                 document.getElementById("color-border").style.borderColor = "black";
                 document.getElementById("color-background").style.backgroundColor = json.product.color.value;
 
-                //product-storage
-                document.getElementById("product-storage").innerHTML = json.product.storage.value;
+
                 //product-description
-                document.getElementById("description").innerHTML = json.product.description;
+                document.getElementById("product-description").innerHTML = json.product.description;
+
+                document.getElementById("madeYear").innerHTML = json.product.madeYear;
+                document.getElementById("gender").innerHTML = json.product.model.gender.value;
 
                 //add-to-cart-main-button
                 const addToCartMain = document.getElementById("add-to-cart-main");
@@ -46,35 +49,32 @@ async function loadData() {
                 });
                 //add-to-cart-main-button-end
 
-                //similer-products
+                // Similar Products
                 let similer_product_main = document.getElementById("smiler-product-main");
-                let productHtml = document.getElementById("similer-product");
-                similer_product_main.innerHTML = "";
+                let productHtml = document.getElementById("similer-product").cloneNode(true); // clone the template
+                productHtml.classList.remove("hidden"); // unhide the clone for use
+                similer_product_main.innerHTML = ""; // clear previous content
+
                 json.productList.forEach(item => {
-                    let productCloneHtml = productHtml.cloneNode(true);
-                    productCloneHtml.querySelector("#similer-product-a1").href = "single-product.html?id=" + item.id;
-                    productCloneHtml.querySelector("#similer-product-image").src = "product-images\\" + item.id + "\\image1.png";
-                    productCloneHtml.querySelector("#simler-product-add-to-cart").addEventListener(
-                            "click", (e) => {
+                    let productCloneHtml = productHtml.cloneNode(true); // clone for each product
+
+                    productCloneHtml.querySelector(".similer-product-a1").href = "single-product.html?id=" + item.id;
+                    productCloneHtml.querySelector(".similer-product-image").src = "product-images/" + item.id + "/image1.png";
+                    productCloneHtml.querySelector(".simler-product-add-to-cart").addEventListener("click", (e) => {
                         addToCart(item.id, 1);
                         e.preventDefault();
                     });
-                    productCloneHtml.querySelector("#similer-product-a2").href = "single-product.html?id=" + item.id;
-                    productCloneHtml.querySelector("#similer-product-title").innerHTML = item.title;
-                    productCloneHtml.querySelector("#similer-product-storage").innerHTML = item.storage.value;
-                    productCloneHtml.querySelector("#similer-product-price").innerHTML = "Rs. " + new Intl.NumberFormat(
-                            "en-US",
-                            {minimumFractionDigits: 2})
-                            .format(item.price);
-                    ;
-                    productCloneHtml.querySelector("#similer-product-color-border").style.borderColor = "black";
-                    productCloneHtml.querySelector("#similer-product-color-background").style.backgroundColor = item.color.value;
+                    productCloneHtml.querySelector(".similer-product-a2").href = "single-product.html?id=" + item.id;
+                    productCloneHtml.querySelector(".similer-product-title").innerHTML = item.title;
+                    productCloneHtml.querySelector(".similer-product-price").innerHTML =
+                            "Rs. " + new Intl.NumberFormat("en-US", {minimumFractionDigits: 2}).format(item.price);
+                    productCloneHtml.querySelector(".similer-product-color-border").style.borderColor = "black";
+                    productCloneHtml.querySelector(".similer-product-color-background").style.backgroundColor = item.color.value;
 
-                    // append the clone code
                     similer_product_main.appendChild(productCloneHtml);
-
                 });
-                //similer-products-end
+                // Similar Products - End
+
 
                 $('.recent-product-activation').slick({
                     infinite: true,

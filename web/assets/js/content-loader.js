@@ -18,379 +18,262 @@ function initHeaderDropdowns() {
 }
 
 function loadHeader() {
-    const data = `<div class="axil-header-top">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-sm-6">
-                <div class="header-top-dropdown">
-                    <div class="dropdown">
-                        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            English
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">English</a></li>
-                        </ul>
-                    </div>
-                    <div class="dropdown">
-                        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            LKR
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">LKR</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="header-top-link">
-                    <ul class="quick-link">
-                        <li><a href="#">Help</a></li>
-                        <li><a href="sign-up.html">Join Us</a></li>
-                        <li><a href="sign-in.html">Sign In</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Start Mainmenu Area  -->
-<div id="axil-sticky-placeholder"></div>
-<div class="axil-mainmenu">
-    <div class="container">
-        <div class="header-navbar">
-            <div class="header-brand">
-                <a href="index.html" class="logo logo-dark">
-                    <img src="assets/images/logo/logo.png" alt="Site Logo">
-                </a>
-                <a href="index.html" class="logo logo-light">
-                    <img src="assets/images/logo/logo-light.png" alt="Site Logo">
-                </a>
-            </div>
-            <div class="header-main-nav">
-                <!-- Start Mainmanu Nav -->
-                <nav class="mainmenu-nav">
-                    <button class="mobile-close-btn mobile-nav-toggler"><i class="fas fa-times"></i></button>
-                    <div class="mobile-nav-brand">
-                        <a href="index.html" class="logo">
-                            <img src="assets/images/logo/logo.png" alt="Site Logo">
-                        </a>
-                    </div>
-                    <ul class="mainmenu">
-                        <li class="menu-item-has-children">
-                            <a href="#">Menu-1</a>
-                            <ul class="axil-submenu">
-                                <li><a href="#">Menu-1-Item-1</a></li>
-                            </ul>
-                        </li>
-                        <li class="menu-item-has-children">
-                            <a href="#">Menu-2</a>
-                            <ul class="axil-submenu">
-                                <li><a href="#">Menu-2-Item-1</a></li>
-                            </ul>
-                        </li>
-                        <li class="menu-item-has-children">
-                            <a href="#">Menu-3</a>
-                            <ul class="axil-submenu">
-                                <li><a href="#">Menu-3-Item-1</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Menu-4</a></li>
-                        <li class="menu-item-has-children">
-                            <a href="#">Menu-5</a>
-                            <ul class="axil-submenu">
-                                <li><a href="#">Menu-5-Item-1</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Menu-6</a></li>
-                    </ul>
-                </nav>
-                <!-- End Mainmanu Nav -->
-            </div>
-            <div class="header-action">
-                <ul class="action-list">
-                    <li class="axil-search">
-                        <a href="javascript:void(0)" class="header-search-icon" title="Search">
-                            <i class="flaticon-magnifying-glass"></i>
-                        </a>
+    const data = `
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand" href="index.html">
+                <span>Elegance Watches</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class=""> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav" id="navbar-links">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
                     </li>
-                    <li class="wishlist">
-                        <a href="#">
-                            <i class="flaticon-heart"></i>
-                        </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
                     </li>
-                    <li class="shopping-cart">
-                        <a href="#" onclick="viewCart();"; class="cart-dropdown-btn">
-                            <span class="cart-count">3</span>
-                            <i class="flaticon-shopping-cart"></i>
-                        </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="search.html">Products</a>
                     </li>
-                    <li class="my-account">
-                        <a href="javascript:void(0)">
-                            <i class="flaticon-person"></i>
-                        </a>
-                        <div class="my-account-dropdown">
-                            <span class="title">QUICKLINKS</span>
-                            <ul>
-                                <li>
-                                    <a href="my-account.html">My Account</a>
-                                </li>
-                                <li>
-                                    <a href="#">Support</a>
-                                </li>
-                                <li>
-                                    <a href="#">Language</a>
-                                </li>
-                            </ul>
-                            <div class="login-btn">
-                                <a href="sign-in.html" class="axil-btn btn-bg-primary">Login</a>
-                            </div>
-                            <div class="reg-footer text-center">No account yet? <a href="sign-up.html" class="btn-link">REGISTER HERE.</a></div>
-                        </div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="testimonial.html">Testimonial</a>
                     </li>
-                    <li class="axil-mobile-toggle">
-                        <button class="menu-btn mobile-nav-toggler">
-                            <i class="flaticon-menu-2"></i>
-                        </button>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact Us</a>
                     </li>
                 </ul>
+                <div class="user_optio_box">
+                    <a href="profile-settings.html">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </a>
+                    <a href="">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
-        </div>
+        </nav>
     </div>
-</div>
-<!-- End Mainmenu Area -->`;
+`;
+
     document.querySelector("header").innerHTML = data;
+
+// Set active nav item
+    const currentPath = window.location.pathname.split("/").pop(); // Get current file name
+    document.querySelectorAll("#navbar-links .nav-link").forEach(link => {
+        if (link.getAttribute("href") === currentPath) {
+            link.parentElement.classList.add("active");
+        }
+    });
+
 }
 
 function loadFooter() {
-    const data = `<!-- Start Footer Top Area  -->
-<div class="footer-top separator-top">
-    <div class="container">
-        <div class="row">
-            <!-- Start Single Widget  -->
-            <div class="col-lg-3 col-sm-6">
-                <div class="axil-footer-widget">
-                    <h5 class="widget-title">Support</h5>
+    const data = `        <section class="info_section layout_padding2">
+            <div class="container">
+                <div class="info_logo">
+                    <h2>
+                        Elegance Watches
+                    </h2>
+                </div>
+                <div class="row">
 
-                    <div class="inner">
-                        <p>
-                        </p>
-                        <ul class="support-list-item">
-                            <li><a href="mailto:support@smarttrade.lk"><i class="fal fa-envelope-open"></i> support@smarttrade.lk</a></li>
-                            <li><a href="tel:"><i class="fal fa-phone-alt"></i> Phone Number</a></li>
-                        </ul>
+                    <div class="col-md-3">
+                        <div class="info_contact">
+                            <h5>
+                                About Shop
+                            </h5>
+                            <div>
+                                <div class="img-box">
+                                    <img src="assets/images/location-white.png" width="18px" alt="">
+                                </div>
+                                <p>
+                                    Address
+                                </p>
+                            </div>
+                            <div>
+                                <div class="img-box">
+                                    <img src="assets/images/telephone-white.png" width="12px" alt="">
+                                </div>
+                                <p>
+                                    +01 1234567890
+                                </p>
+                            </div>
+                            <div>
+                                <div class="img-box">
+                                    <img src="assets/images/envelope-white.png" width="18px" alt="">
+                                </div>
+                                <p>
+                                    demo@gmail.com
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <!-- End Single Widget  -->
-            <!-- Start Single Widget  -->
-            <div class="col-lg-3 col-sm-6">
-                <div class="axil-footer-widget">
-                    <h5 class="widget-title">Account</h5>
-                    <div class="inner">
-                        <ul>
-                            <li><a href="my-account.html">My Account</a></li>
-                            <li><a href="sign-in.html">Login / Register</a></li>
-                            <li><a href="cart.html">Cart</a></li>
-                            <li><a href="#">Wishlist</a></li>
-                            <li><a href="index.html">Shop</a></li>
-                        </ul>
+                    <div class="col-md-3">
+                        <div class="info_info">
+                            <h5>
+                                Informations
+                            </h5>
+                            <p>
+                                ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <!-- End Single Widget  -->
-            <!-- Start Single Widget  -->
-            <div class="col-lg-3 col-sm-6">
-                <div class="axil-footer-widget">
-                    <h5 class="widget-title">Quick Link</h5>
-                    <div class="inner">
-                        <ul>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms Of Use</a></li>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- End Single Widget  -->
-            <!-- Start Single Widget  -->
-            <div class="col-lg-3 col-sm-6">
-                <div class="axil-footer-widget">
-                    <h5 class="widget-title">Download App</h5>
-                    <div class="inner">
-                        <div class="download-btn-group">
 
-                            <div class="app-link">
-                                <a href="#">
-                                    <img src="assets/images/others/app-store.png" alt="App Store">
+                    <div class="col-md-3">
+                        <div class="info_insta">
+                            <h5>
+                                Instagram
+                            </h5>
+                            <div class="insta_container">
+                                <div class="row m-0">
+                                    <div class="col-4 px-0">
+                                        <a href="">
+                                            <div class="insta-box b-1">
+                                                <img src="assets/images/w1.png" alt="">
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 px-0">
+                                        <a href="">
+                                            <div class="insta-box b-1">
+                                                <img src="assets/images/w2.png" alt="">
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 px-0">
+                                        <a href="">
+                                            <div class="insta-box b-1">
+                                                <img src="assets/images/w3.png" alt="">
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 px-0">
+                                        <a href="">
+                                            <div class="insta-box b-1">
+                                                <img src="assets/images/w4.png" alt="">
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 px-0">
+                                        <a href="">
+                                            <div class="insta-box b-1">
+                                                <img src="assets/images/w5.png" alt="">
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 px-0">
+                                        <a href="">
+                                            <div class="insta-box b-1">
+                                                <img src="assets/images/w6.png" alt="">
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="info_form ">
+                            <h5>
+                                Newsletter
+                            </h5>
+                            <form action="">
+                                <input type="email" placeholder="Enter your email">
+                                <button>
+                                    Subscribe
+                                </button>
+                            </form>
+                            <div class="social_box">
+                                <a href="">
+                                    <img src="assets/images/fb.png" alt="">
                                 </a>
-                                <a href="#">
-                                    <img src="assets/images/others/play-store.png" alt="Play Store">
+                                <a href="">
+                                    <img src="assets/images/twitter.png" alt="">
+                                </a>
+                                <a href="">
+                                    <img src="assets/images/linkedin.png" alt="">
+                                </a>
+                                <a href="">
+                                    <img src="assets/images/youtube.png" alt="">
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- End Single Widget  -->
-        </div>
-    </div>
-</div>
-<!-- End Footer Top Area  -->
-<!-- Start Copyright Area  -->
-<div class="copyright-area copyright-default separator-top">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-xl-4">
-                <div class="social-share">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="col-xl-4 col-lg-12">
-                <div class="copyright-left d-flex flex-wrap justify-content-center">
-                    <ul class="quick-link">
-                        <li>©2025. All rights reserved by <a target="_blank" href="#">SmartTrade</a>.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-xl-4 col-lg-12">
-                <div class="copyright-right d-flex flex-wrap justify-content-xl-end justify-content-center align-items-center">
-                    <span class="card-text">Accept For</span>
-                    <ul class="payment-icons-bottom quick-link">
-                        <li><img src="assets/images/icons/mastercard.png" alt="paypal cart"></li>
-                        <li><img src="assets/images/icons/visa.png" alt="paypal cart"></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Copyright Area  -->
+        </section>
 
+        <!-- end info_section -->
 
-<!-- Header Search Modal End -->
-<div class="header-search-modal" id="header-search-modal">
-    <button class="card-close sidebar-close"><i class="fas fa-times"></i></button>
-    <div class="header-search-wrap">
-        <div class="card-header">
-            <form action="#">
-                <div class="input-group">
-                    <input type="search" class="form-control" name="prod-search" id="prod-search" placeholder="Search">
-                    <button type="submit" class="axil-btn btn-bg-primary"><i class="far fa-search"></i></button>
-                </div>
-            </form>
-        </div>
-        <div class="card-body">
-            <div class="search-result-header">
-                <h6 class="title">1 Result Found</h6>
-                <a href="#" class="view-all">View All</a>
+        <!-- copyright section -->
+        <section class="footer_section">
+            <div class="container">
+                <p>
+                    &copy; <span id="displayYear"></span> All Rights Reserved By
+                   Elegance Watches
+                </p>
             </div>
-            <div class="psearch-results">
-                <div class="axil-product-list">
-                    <div class="thumbnail">
-                        <a href="#">
-                            <img src="./assets/images/product/product-03.png" alt="Product Image-1">
-                        </a>
-                    </div>
-                    <div class="product-content">
-
-                        <h6 class="product-title"><a href="#">Product Title-1</a></h6>
-                        <div class="product-price-variant">
-                            <span class="price current-price">Rs. 0.00</span>
-                        </div>
-                        <div class="product-cart">
-                            <a href="#" class="cart-btn"><i class="fal fa-shopping-cart"></i></a>
-                            <a href="#" class="cart-btn"><i class="fal fa-heart"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Header Search Modal End -->
-
-
-<div class="cart-dropdown" id="cart-dropdown">
-    <div class="cart-content-wrap">
-        <div class="cart-header">
-            <h2 class="header-title">Cart Review</h2>
-            <button class="cart-close sidebar-close"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="cart-body">
-            <ul class="cart-item-list" id="side-panal-cart-item-list">
-                
-            </ul>
-        </div>
-        <div class="cart-footer">
-            <h3 class="cart-subtotal">
-                <span class="subtotal-title">Subtotal:</span>
-                <span class="subtotal-amount" id="side-panel-cart-sub-total">Rs. 0.00</span>
-            </h3>
-            <div class="group-btn">
-                <a href="cart.html" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
-                <a href="checkout.html" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="closeMask"></div>`;
+        </section>
+        <!-- copyright section -->`;
 
     document.querySelector("footer").innerHTML = data;
 }
 
-async function viewCart() {
-    const popup = new Notification();
-    const response = await fetch("LoadCartItems");
-    if (response.ok) {
-        const json = await response.json();
-        if (json.status) {
-            const side_panel_cart_item_list = document.getElementById("side-panal-cart-item-list");
-            side_panel_cart_item_list.innerHTML = "";
-
-            let total = 0;
-            let totalQty = 0;
-            json.cartItems.forEach(cart => {
-                let productSubTotal = cart.product.price * cart.qty;
-                total += productSubTotal;
-                totalQty += cart.qty;
-                let cartItem = `<li class="cart-item">
-                    <div class="item-img">
-                        <a href="single-product.html?id=${cart.product.id}">
-<img src="product-images\\${cart.product.id}\\image1.png" alt="Product Image-1"></a>
-                        <button class="close-btn"><i class="fas fa-times"></i></button>
-                    </div>
-                    <div class="item-content">
-                        <h3 class="item-title"><a href="#">${cart.product.title}</a></h3>
-                        <div class="item-price"><span class="currency-symbol">Rs. </span>${new Intl.NumberFormat(
-                        "en-US",
-                        {minimumFractionDigits: 2})
-                        .format(cart.product.price)}</div>
-                        <div class="pro-qty item-quantity">
-                            <input type="number" class="quantity-input" value="${cart.qty}">
-                        </div>
-                    </div>
-                </li>`;
-                side_panel_cart_item_list.innerHTML += cartItem;
-            });
-            document.getElementById("side-panel-cart-sub-total").innerHTML = new Intl.NumberFormat("en-US",
-                    {minimumFractionDigits: 2})
-                    .format(total);
-        } else {
-            popup.error({
-                message: json.message
-            });
-        }
-    } else {
-        popup.error({
-            message: "Cart Items loading failed..."
-        });
-    }
-}
+//async function viewCart() {
+//    const popup = new Notification();
+//    const response = await fetch("LoadCartItems");
+//    if (response.ok) {
+//        const json = await response.json();
+//        if (json.status) {
+//            const side_panel_cart_item_list = document.getElementById("side-panal-cart-item-list");
+//            side_panel_cart_item_list.innerHTML = "";
+//
+//            let total = 0;
+//            let totalQty = 0;
+//            json.cartItems.forEach(cart => {
+//                let productSubTotal = cart.product.price * cart.qty;
+//                total += productSubTotal;
+//                totalQty += cart.qty;
+//                let cartItem = `<li class="cart-item">
+//                    <div class="item-img">
+//                        <a href="single-product.html?id=${cart.product.id}">
+//<img src="product-images\\${cart.product.id}\\image1.png" alt="Product Image-1"></a>
+//                        <button class="close-btn"><i class="fas fa-times"></i></button>
+//                    </div>
+//                    <div class="item-content">
+//                        <h3 class="item-title"><a href="#">${cart.product.title}</a></h3>
+//                        <div class="item-price"><span class="currency-symbol">Rs. </span>${new Intl.NumberFormat(
+//                        "en-US",
+//                        {minimumFractionDigits: 2})
+//                        .format(cart.product.price)}</div>
+//                        <div class="pro-qty item-quantity">
+//                            <input type="number" class="quantity-input" value="${cart.qty}">
+//                        </div>
+//                    </div>
+//                </li>`;
+//                side_panel_cart_item_list.innerHTML += cartItem;
+//            });
+//            document.getElementById("side-panel-cart-sub-total").innerHTML = new Intl.NumberFormat("en-US",
+//                    {minimumFractionDigits: 2})
+//                    .format(total);
+//        } else {
+//            popup.error({
+//                message: json.message
+//            });
+//        }
+//    } else {
+//        popup.error({
+//            message: "Cart Items loading failed..."
+//        });
+//    }
+//}
 
 loadHeader();
 loadFooter();

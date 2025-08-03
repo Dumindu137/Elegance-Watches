@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import hibernate.Brand;
 import hibernate.Color;
+import hibernate.Gender;
 import hibernate.HibernateUtil;
 import hibernate.Model;
 import hibernate.Product;
@@ -31,7 +32,7 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  *
- * @author Dilhara
+ * @author Dumindu
  */
 @WebServlet(name = "LoadData", urlPatterns = {"/LoadData"})
 public class LoadData extends HttpServlet {
@@ -58,6 +59,10 @@ public class LoadData extends HttpServlet {
         List<Color> colorList = c3.list();
         //get-colors-end
 
+        // Add this after color
+        Criteria c4 = s.createCriteria(Gender.class);
+        List<Gender> genderList = c4.list();
+        responseObject.add("genderList", gson.toJsonTree(genderList));
 
         //get-quality
         Criteria c5 = s.createCriteria(Quality.class);
@@ -65,12 +70,12 @@ public class LoadData extends HttpServlet {
         //get-quality-end
 
         //load-product-data
-        Status status = (Status) s.get(Status.class, 2);
+        Status status = (Status) s.get(Status.class, 1);
         Criteria c6 = s.createCriteria(Product.class);
         c6.addOrder(Order.desc("id"));
         c6.add(Restrictions.eq("status", status));
         responseObject.addProperty("allProductCount", c6.list().size());
-        
+
         c6.setFirstResult(0);
         c6.setMaxResults(6);
 
@@ -84,8 +89,8 @@ public class LoadData extends HttpServlet {
         responseObject.add("modelList", gson.toJsonTree(modelList));
         responseObject.add("colorList", gson.toJsonTree(colorList));
         responseObject.add("qualityList", gson.toJsonTree(qualityList));
-        
         responseObject.add("productList", gson.toJsonTree(productList));
+//        responseObject.add("genderList", gson.toJsonTree(genderList));
         responseObject.addProperty("status", true);
         System.out.println(gson.toJson(responseObject));
 

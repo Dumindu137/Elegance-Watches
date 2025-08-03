@@ -51,31 +51,25 @@ async function loadProductsToHomepage() {
             box.className = "box";
 
             box.innerHTML = `
-                <div class="box-content">
-                    <div class="img-box">
-                        <img src="product-images/${product.id}/image1.png" alt="${product.title}">
-                    </div>
-                    <div class="detail-box">
-                        <div class="text">
-                            <h6>${product.title}</h6>
-                            <h5><span>Rs.</span> ${parseFloat(product.price).toFixed(2)}</h5>
-                        </div>
-                        <div class="like">
-                            <h6>Like</h6>
-                            <div class="star_container">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                    </div>
+    <div style="width: 350px; height: 350px; border: 1px solid #ddd; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; background: #fff; padding: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+        <a href="single-product.html?id=${product.id}" style="text-decoration: none; color: inherit; flex-grow: 1;">
+            <div style="width: 100%; height: 180px; display: flex; justify-content: center; align-items: center; background-color: #f9f9f9;">
+                <img src="product-images/${product.id}/image1.png" alt="${product.title}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+            </div>
+            <div class="detail-box" style="margin-top: 10px;">
+                <div class="text" style="text-align: center;">
+                    <h6 style="font-weight: 600; font-size: 1rem;">${product.title}</h6>
+                    <h5 style="font-size: 1rem; color: #e53935;"><span style="font-weight: 500;">Rs.</span> ${parseFloat(product.price).toFixed(2)}</h5>
                 </div>
-                <div class="btn-box">
-                    <a href="#" onclick="addToCart(${product.id}, 1)">Add To Cart</a>
-                </div>
-            `;
+            </div>
+        </a>
+        <div class="btn-box" style="margin-top: 12px; text-align: center;">
+            <a href="#" onclick="addToCart(${product.id}, 1)" style="display: inline-block; padding: 6px 14px; background: #007bff; color: white; border-radius: 4px; text-decoration: none;">Add To Cart</a>
+        </div>
+    </div>
+`;
+
+
 
             container.appendChild(box);
         });
@@ -85,7 +79,70 @@ async function loadProductsToHomepage() {
 }
 
 
+async function loadAllToProductPage() {
+    console.log("Running loadAllToProductPage()");
 
+    try {
+        const response = await fetch("LoadProductPageData");
+        if (!response.ok) {
+            console.error("Failed to load product data");
+            return;
+        }
+
+        const data = await response.json();
+        console.log("Received data:", data);
+
+        if (!data.status) {
+            console.error("Backend returned error status");
+            return;
+        }
+
+        // DOM must already be loaded at this point
+        const section = document.querySelector(".product_section");
+        if (!section) {
+            console.error("No .product_section found");
+            return;
+        }
+
+        const container = section.querySelector(".product_container");
+        if (!container) {
+            console.error("No .product_container found inside .product_section");
+            return;
+        }
+
+        container.innerHTML = ""; // Clear existing content
+
+        data.productList.forEach(product => {
+            const box = document.createElement("div");
+            box.className = "box";
+
+            box.innerHTML = `
+    <div style="width: 350px; height: 350px; border: 1px solid #ddd; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; background: #fff; padding: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+        <a href="single-product.html?id=${product.id}" style="text-decoration: none; color: inherit; flex-grow: 1;">
+            <div style="width: 100%; height: 180px; display: flex; justify-content: center; align-items: center; background-color: #f9f9f9;">
+                <img src="product-images/${product.id}/image1.png" alt="${product.title}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+            </div>
+            <div class="detail-box" style="margin-top: 5px;">
+                <div class="text" style="text-align: center;">
+                    <h6 style="font-weight: 600; font-size: 1rem;">${product.title}</h6>
+                    <h5 style="font-size: 1rem; color: #e53935;"><span style="font-weight: 500;">Rs.</span> ${parseFloat(product.price).toFixed(2)}</h5>
+                </div>
+            </div>
+        </a>
+        <div class="btn-box" style="margin-top: 12px; text-align: center;">
+            <a href="#" onclick="addToCart(${product.id}, 1)" style="display: inline-block; padding: 6px 14px; background: #007bff; color: white; border-radius: 4px; text-decoration: none;">Add To Cart</a>
+        </div>
+    </div>
+`;
+
+
+
+            container.appendChild(box);
+        });
+    } catch (e) {
+        console.error("Error loading homepage data:", e);
+    }
+}
 
 async function addToCart(productId, qty) {
     const response = await fetch(`AddToCart?prId=${productId}&qty=${qty}`);

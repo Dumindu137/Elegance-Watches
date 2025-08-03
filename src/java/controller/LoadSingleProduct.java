@@ -25,7 +25,7 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  *
- * @author Dilhara
+ * @author Dumindu
  */
 @WebServlet(name = "LoadSingleProduct", urlPatterns = {"/LoadSingleProduct"})
 public class LoadSingleProduct extends HttpServlet {
@@ -42,24 +42,30 @@ public class LoadSingleProduct extends HttpServlet {
             Session s = sf.openSession();
             try {
                 Product product = (Product) s.get(Product.class, Integer.valueOf(productId));
-                if (product.getStatus().getValue().equals("Active")) {
+                if (product.getStatus().getValue().equals("Available")) {
                     product.getUser().setEmail(null);
                     product.getUser().setPassword(null);
                     product.getUser().setVerification(null);
                     product.getUser().setId(-1);
                     product.getUser().setCreated_at(null);
 
-                    // similer-product-data
+                    // Filter models by same brand and same gender
                     Criteria c1 = s.createCriteria(Model.class);
                     c1.add(Restrictions.eq("brand", product.getModel().getBrand()));
+                    c1.add(Restrictions.eq("gender", product.getModel().getGender()));
                     List<Model> modelList = c1.list();
 
+                    System.out.println("model list" + modelList);
+                    
+                    // Now fetch products with those models, but exclude current one
                     Criteria c2 = s.createCriteria(Product.class);
                     c2.add(Restrictions.in("model", modelList));
                     c2.add(Restrictions.ne("id", product.getId()));
                     c2.setMaxResults(6);
                     List<Product> productList = c2.list();
-                    
+
+                    System.out.println("similar list" + productList);
+
                     for (Product pr : productList) {
                         pr.getUser().setEmail(null);
                         pr.getUser().setPassword(null);
