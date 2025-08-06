@@ -18,7 +18,8 @@ payhere.onError = function onError(error) {
 };
 
 async function loadCheckoutData() {
-    const popup = new Notification();
+    
+//    const popup = new Notification();
     const response = await fetch("LoadCheckOutData");
     if (response.ok) { //200
         const json = await response.json();
@@ -28,21 +29,21 @@ async function loadCheckoutData() {
             const cityList = json.cityList;
             const cartItems = json.cartList;
             const deliveryTypes = json.deliveryTypes;
-
+            
             // load citites
             let city_select = document.getElementById("city-select");
-
+            
             cityList.forEach(city => {
                 let option = document.createElement("option");
                 option.value = city.id;
                 option.innerHTML = city.name;
                 city_select.appendChild(option);
             });
-
+            
             // load current address
             const current_address_checkbox = document.getElementById("checkbox1");
             current_address_checkbox.addEventListener("change", function () {
-
+                
                 let first_name = document.getElementById("first-name");
                 let last_name = document.getElementById("last-name");
                 let line_one = document.getElementById("line-one");
@@ -55,9 +56,9 @@ async function loadCheckoutData() {
                     city_select.value = userAddress.city.id;
                     city_select.disabled = true;
                     city_select.dispatchEvent(new Event("change"));
-                    line_one.value = userAddress.lineOne;
-                    line_two.value = userAddress.lineTwo;
-                    postal_code.value = userAddress.postalCode;
+                    line_one.value = userAddress.line1
+                    line_two.value = userAddress.line2;
+                    postal_code.value = userAddress.postal_code;
                     mobile.value = userAddress.mobile;
                 } else {
                     first_name.value = "";
@@ -71,16 +72,16 @@ async function loadCheckoutData() {
                     mobile.value = "";
                 }
             });
-
+            
             // cart-details
             let st_tbody = document.getElementById("st-tbody");
             let st_item_tr = document.getElementById("st-item-tr");
             let st_subtotal_tr = document.getElementById("st-subtotal-tr");
             let st_order_shipping_tr = document.getElementById("st-order-shipping-tr");
             let st_order_total_tr = document.getElementById("st-order-total-tr");
-
+            
             st_tbody.innerHTML = "";
-
+            
             let total = 0;
             let item_count = 0;
             cartItems.forEach(cart => {
@@ -91,24 +92,24 @@ async function loadCheckoutData() {
                         .innerHTML = cart.qty;
                 item_count += cart.qty;
                 let item_sub_total = Number(cart.qty) * Number(cart.product.price);
-
+                
                 st_item_tr_clone.querySelector("#st-product-price")
                         .innerHTML = new Intl.NumberFormat(
                                 "en-US",
                                 {minimumFractionDigits: 2})
                         .format(item_sub_total);
                 st_tbody.appendChild(st_item_tr_clone);
-
+                
                 total += item_sub_total;
             });
-
+            
             st_subtotal_tr.querySelector("#st-product-total-amount")
                     .innerHTML = new Intl.NumberFormat(
                             "en-US",
                             {minimumFractionDigits: 2})
                     .format(total);
             st_tbody.appendChild(st_subtotal_tr);
-
+            
             let shipping_charges = 0;
             city_select.addEventListener("change", (e) => {
                 let cityName = city_select.options[city_select.selectedIndex].innerHTML;
@@ -118,14 +119,14 @@ async function loadCheckoutData() {
                     // out of colombo
                     shipping_charges = item_count * deliveryTypes[1].price;
                 }
-
+                
                 st_order_shipping_tr.querySelector("#st-product-shipping-charges")
                         .innerHTML = new Intl.NumberFormat(
                                 "en-US",
                                 {minimumFractionDigits: 2})
                         .format(shipping_charges);
                 st_tbody.appendChild(st_order_shipping_tr);
-
+                
                 st_order_total_tr.querySelector("#st-order-total-amount")
                         .innerHTML = new Intl.NumberFormat(
                                 "en-US",
@@ -162,7 +163,7 @@ async function checkout() {
     let line_two = document.getElementById("line-two");
     let postal_code = document.getElementById("postal-code");
     let mobile = document.getElementById("mobile");
-
+    
     let data = {
         isCurrentAddress: checkbox1,
         firstName: first_name.value,
@@ -174,7 +175,7 @@ async function checkout() {
         mobile: mobile.value
     };
     let dataJSON = JSON.stringify(data);
-
+    
     const response = await fetch("CheckOut", {
         method: "POST",
         header: {
@@ -182,7 +183,7 @@ async function checkout() {
         },
         body: dataJSON
     });
-
+    
     const popup = new Notification();
     if (response.ok) {
         const json = await response.json();

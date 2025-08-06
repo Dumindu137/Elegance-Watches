@@ -1,0 +1,181 @@
+/* General Typography */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+h4.title,
+h5.title {
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: 500;
+    font-size: 13px;
+    color: #555;
+}
+
+
+input,
+select {
+    height: 45px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 100%;
+}
+
+/* Checkbox styling */
+.form-group.input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-group.input-group input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    transform: scale(1);
+}
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Checkout Container */
+.axil-checkout-area {
+    border-radius: 10px;
+    padding: 40px 30px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    margin-bottom: 40px;
+}
+
+
+/* Order Summary Box */
+.axil-order-summery {
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: none;
+}
+
+
+.axil-order-summery h5.title {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+/* Table Styling */
+.summery-table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.summery-table th,
+.summery-table td {
+    font-size: 14px;
+    padding: 10px 0;
+}
+
+.order-total {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* Payment Section */
+.order-payment-method {
+    margin-top: 30px;
+}
+
+.single-payment {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.single-payment label {
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+/* Button */
+.checkout-btn {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: #fff;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
+    height: 35px;
+    border-radius: 5px;
+}
+
+.checkout-btn:hover {
+    background: linear-gradient(135deg, #0056b3, #003f7f);
+}
+
+
+/* Service Area Styling */
+.service-area {
+    background-color: #fff;
+    padding: 40px 0;
+    margin-top: 40px;
+}
+
+.service-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.service-box .icon img {
+    width: 50px;
+}
+
+.service-box .title {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .axil-checkout-area {
+        padding: 20px 15px;
+    }
+
+    .axil-order-summery {
+        margin-top: 30px;
+    }
+
+    .checkout-btn {
+        font-size: 14px;
+        padding: 12px;
+    }
+}
+.single-payment .input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.single-payment .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* smaller gap just between radio and label */
+}
+
+.single-payment input[type="radio"] {
+    width: auto;
+    height: auto;
+    margin: 0;
+    vertical-align: middle;
+}
+
+.single-payment .card-icons img {
+    height: 24px;
+    margin-left: 5px;
+}

@@ -54,9 +54,10 @@ public class LoadCheckOutData extends HttpServlet {
 
             if (c1.list().isEmpty()) {
                 responseObject.addProperty("message",
-                        "Your account details are incomplete. Please filling your shipping address");
+                        "Your account details are incomplete. Please Enter your Shipping Address");
             } else {
                 Address address = (Address) c1.list().get(0);
+               
                 // retrive user first name and last name
                 address.getUser().setEmail(null);
                 address.getUser().setPassword(null);
