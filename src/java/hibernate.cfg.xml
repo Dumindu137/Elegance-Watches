@@ -18,6 +18,11 @@
         <mapping class="hibernate.Gender"/>
         <mapping class="hibernate.Product"/>
         <mapping class="hibernate.Status"/>
+        <mapping class="hibernate.Cart"/>
+        <mapping class="hibernate.DeliveryTypes"/>
+        <mapping class="hibernate.Orders"/>
+        <mapping class="hibernate.OrderStatus"/>
+        <mapping class="hibernate.OrderItems"/>
     </session-factory>
 </hibernate-configuration>
 

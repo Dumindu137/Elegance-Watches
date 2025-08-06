@@ -187,8 +187,9 @@ function updateProductView(json) {
         let st_product_clone = st_product.cloneNode(true);// enable child nodes cloning / allow child nodes
         st_product_clone.querySelector("#st-product-a-1").href = "single-product.html?id=" + product.id;
         st_product_clone.querySelector("#st-product-img-1").src = "product-images//" + product.id + "//image1.png";
-        st_product_clone.querySelector("#st-product-add-to-cart").addEventListener(
+        st_product_clone.querySelector(".st-product-add-to-cart").addEventListener(
                 "click", (e) => {
+            console.log("Clicked Add to Cart for product ID:", product.id);
             addToCart(product.id, 1);
             e.preventDefault();
         });
@@ -258,6 +259,7 @@ function updateProductView(json) {
 }
 
 async function addToCart(productId, qty) {
+    console.log("Sending add-to-cart request:", productId, qty);
     const popup = new Notification();// link notification js in single-product.html
     const response = await fetch("AddToCart?prId=" + productId + "&qty=" + qty);
     if (response.ok) {

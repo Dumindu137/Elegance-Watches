@@ -44,7 +44,14 @@ public class MyAccount extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession ses = request.getSession(false);
         if (ses != null && ses.getAttribute("user") != null) {
-            User user = (User) ses.getAttribute("user");
+
+            User user = (User) request.getSession().getAttribute("user");
+            System.out.println("Session user: " + user);
+            if (user != null) {
+                System.out.println("User ID: " + user.getId());
+            }
+
+//            User user = (User) ses.getAttribute("user");
             JsonObject responseObject = new JsonObject();
             responseObject.addProperty("firstName", user.getFirst_name());
             responseObject.addProperty("lastName", user.getLast_name());
@@ -163,7 +170,7 @@ public class MyAccount extends HttpServlet {
 
                     ses.setAttribute("user", u1); // update session
                     tx.commit(); //  Commit changes
-               
+
                     responseObject.addProperty("status", true);
                     responseObject.addProperty("message", "User profile details updated successfully!");
                 }

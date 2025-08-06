@@ -16,26 +16,29 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "address")
-public class Address implements Serializable{
-    
+public class Address implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    
+
     @Column(name = "line1", nullable = false)
     private String line1;
-    
+
     @Column(name = "line2", nullable = false)
     private String line2;
-    
+
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
-    
-    @Column(name = "postal_code",length = 45, nullable = false)
+
+    @Column(name = "postal_code", length = 45, nullable = false)
     private String postal_code;
-    
+
+    @Column(name = "mobile", length = 10, nullable = false)
+    private String mobile;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -51,8 +54,8 @@ public class Address implements Serializable{
         this.postal_code = postal_code;
         this.user = user;
     }
-    
-        public Address(String line1, String line2, City city, String postal_code, User user) {
+
+    public Address(String line1, String line2, City city, String postal_code, User user) {
         this.line1 = line1;
         this.line2 = line2;
         this.city = city;
@@ -107,6 +110,20 @@ public class Address implements Serializable{
     public void setUser(User user) {
         this.user = user;
     }
-    
-    
+
+    /**
+     * @return the mobile
+     */
+    public String getMobile() {
+        return mobile;
+    }
+
+    /**
+     * @param mobile the mobile to set
+     */
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+  
 }

@@ -52,7 +52,7 @@ function loadHeader() {
                     <a href="profile-settings.html">
                         <i class="fa fa-user" aria-hidden="true"></i>
                     </a>
-                    <a href="">
+                    <a href="cart.html">
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                     </a>
                 </div>
@@ -226,54 +226,54 @@ function loadFooter() {
     document.querySelector("footer").innerHTML = data;
 }
 
-//async function viewCart() {
-//    const popup = new Notification();
-//    const response = await fetch("LoadCartItems");
-//    if (response.ok) {
-//        const json = await response.json();
-//        if (json.status) {
-//            const side_panel_cart_item_list = document.getElementById("side-panal-cart-item-list");
-//            side_panel_cart_item_list.innerHTML = "";
-//
-//            let total = 0;
-//            let totalQty = 0;
-//            json.cartItems.forEach(cart => {
-//                let productSubTotal = cart.product.price * cart.qty;
-//                total += productSubTotal;
-//                totalQty += cart.qty;
-//                let cartItem = `<li class="cart-item">
-//                    <div class="item-img">
-//                        <a href="single-product.html?id=${cart.product.id}">
-//<img src="product-images\\${cart.product.id}\\image1.png" alt="Product Image-1"></a>
-//                        <button class="close-btn"><i class="fas fa-times"></i></button>
-//                    </div>
-//                    <div class="item-content">
-//                        <h3 class="item-title"><a href="#">${cart.product.title}</a></h3>
-//                        <div class="item-price"><span class="currency-symbol">Rs. </span>${new Intl.NumberFormat(
-//                        "en-US",
-//                        {minimumFractionDigits: 2})
-//                        .format(cart.product.price)}</div>
-//                        <div class="pro-qty item-quantity">
-//                            <input type="number" class="quantity-input" value="${cart.qty}">
-//                        </div>
-//                    </div>
-//                </li>`;
-//                side_panel_cart_item_list.innerHTML += cartItem;
-//            });
-//            document.getElementById("side-panel-cart-sub-total").innerHTML = new Intl.NumberFormat("en-US",
-//                    {minimumFractionDigits: 2})
-//                    .format(total);
-//        } else {
-//            popup.error({
-//                message: json.message
-//            });
-//        }
-//    } else {
-//        popup.error({
-//            message: "Cart Items loading failed..."
-//        });
-//    }
-//}
+async function viewCart() {
+    const popup = new Notification();
+    const response = await fetch("LoadCartItems");
+    if (response.ok) {
+        const json = await response.json();
+        if (json.status) {
+            const side_panel_cart_item_list = document.getElementById("side-panal-cart-item-list");
+            side_panel_cart_item_list.innerHTML = "";
+
+            let total = 0;
+            let totalQty = 0;
+            json.cartItems.forEach(cart => {
+                let productSubTotal = cart.product.price * cart.qty;
+                total += productSubTotal;
+                totalQty += cart.qty;
+                let cartItem = `<li class="cart-item">
+                    <div class="item-img">
+                        <a href="single-product.html?id=${cart.product.id}">
+<img src="product-images\\${cart.product.id}\\image1.png" alt="Product Image-1"></a>
+                        <button class="close-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="item-content">
+                        <h3 class="item-title"><a href="#">${cart.product.title}</a></h3>
+                        <div class="item-price"><span class="currency-symbol">Rs. </span>${new Intl.NumberFormat(
+                        "en-US",
+                        {minimumFractionDigits: 2})
+                        .format(cart.product.price)}</div>
+                        <div class="pro-qty item-quantity">
+                            <input type="number" class="quantity-input" value="${cart.qty}">
+                        </div>
+                    </div>
+                </li>`;
+                side_panel_cart_item_list.innerHTML += cartItem;
+            });
+            document.getElementById("side-panel-cart-sub-total").innerHTML = new Intl.NumberFormat("en-US",
+                    {minimumFractionDigits: 2})
+                    .format(total);
+        } else {
+            popup.error({
+                message: json.message
+            });
+        }
+    } else {
+        popup.error({
+            message: "Cart Items loading failed..."
+        });
+    }
+}
 
 loadHeader();
 loadFooter();
