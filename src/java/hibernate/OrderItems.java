@@ -19,7 +19,7 @@ import javax.persistence.Table;
  * @author Dumindu
  */
 @Entity
-@Table(name="order_item")
+@Table(name="order_items")
 public class OrderItems implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

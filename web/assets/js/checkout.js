@@ -1,9 +1,11 @@
 payhere.onCompleted = function onCompleted(orderId) {
     const popup = new Notification();
-    popup.success({
-        message: "Payment completed. OrderID:" + orderId
-    });
+ 
+    toastr.success("Payment completed. OrderID:" + orderId);
+
+    finalizeOrderAfterPayment(orderId);
 };
+
 
 // Payment window closed
 payhere.onDismissed = function onDismissed() {
@@ -18,7 +20,7 @@ payhere.onError = function onError(error) {
 };
 
 async function loadCheckoutData() {
-    
+
 //    const popup = new Notification();
     const response = await fetch("LoadCheckOutData");
     if (response.ok) { //200
@@ -29,21 +31,21 @@ async function loadCheckoutData() {
             const cityList = json.cityList;
             const cartItems = json.cartList;
             const deliveryTypes = json.deliveryTypes;
-            
+
             // load citites
             let city_select = document.getElementById("city-select");
-            
+
             cityList.forEach(city => {
                 let option = document.createElement("option");
                 option.value = city.id;
                 option.innerHTML = city.name;
                 city_select.appendChild(option);
             });
-            
+
             // load current address
             const current_address_checkbox = document.getElementById("checkbox1");
             current_address_checkbox.addEventListener("change", function () {
-                
+
                 let first_name = document.getElementById("first-name");
                 let last_name = document.getElementById("last-name");
                 let line_one = document.getElementById("line-one");
@@ -72,16 +74,16 @@ async function loadCheckoutData() {
                     mobile.value = "";
                 }
             });
-            
+
             // cart-details
             let st_tbody = document.getElementById("st-tbody");
             let st_item_tr = document.getElementById("st-item-tr");
             let st_subtotal_tr = document.getElementById("st-subtotal-tr");
             let st_order_shipping_tr = document.getElementById("st-order-shipping-tr");
             let st_order_total_tr = document.getElementById("st-order-total-tr");
-            
+
             st_tbody.innerHTML = "";
-            
+
             let total = 0;
             let item_count = 0;
             cartItems.forEach(cart => {
@@ -92,24 +94,24 @@ async function loadCheckoutData() {
                         .innerHTML = cart.qty;
                 item_count += cart.qty;
                 let item_sub_total = Number(cart.qty) * Number(cart.product.price);
-                
+
                 st_item_tr_clone.querySelector("#st-product-price")
                         .innerHTML = new Intl.NumberFormat(
                                 "en-US",
                                 {minimumFractionDigits: 2})
                         .format(item_sub_total);
                 st_tbody.appendChild(st_item_tr_clone);
-                
+
                 total += item_sub_total;
             });
-            
+
             st_subtotal_tr.querySelector("#st-product-total-amount")
                     .innerHTML = new Intl.NumberFormat(
                             "en-US",
                             {minimumFractionDigits: 2})
                     .format(total);
             st_tbody.appendChild(st_subtotal_tr);
-            
+
             let shipping_charges = 0;
             city_select.addEventListener("change", (e) => {
                 let cityName = city_select.options[city_select.selectedIndex].innerHTML;
@@ -119,14 +121,14 @@ async function loadCheckoutData() {
                     // out of colombo
                     shipping_charges = item_count * deliveryTypes[1].price;
                 }
-                
+
                 st_order_shipping_tr.querySelector("#st-product-shipping-charges")
                         .innerHTML = new Intl.NumberFormat(
                                 "en-US",
                                 {minimumFractionDigits: 2})
                         .format(shipping_charges);
                 st_tbody.appendChild(st_order_shipping_tr);
-                
+
                 st_order_total_tr.querySelector("#st-order-total-amount")
                         .innerHTML = new Intl.NumberFormat(
                                 "en-US",
@@ -155,50 +157,88 @@ async function loadCheckoutData() {
 
 
 async function checkout() {
+    console.log("Checkout button clicked");
+
     let checkbox1 = document.getElementById("checkbox1").checked;
-    let first_name = document.getElementById("first-name");
-    let last_name = document.getElementById("last-name");
-    let city_select = document.getElementById("city-select");
-    let line_one = document.getElementById("line-one");
-    let line_two = document.getElementById("line-two");
-    let postal_code = document.getElementById("postal-code");
-    let mobile = document.getElementById("mobile");
-    
     let data = {
         isCurrentAddress: checkbox1,
-        firstName: first_name.value,
-        lastName: last_name.value,
-        citySelect: city_select.value,
-        lineOne: line_one.value,
-        lineTwo: line_two.value,
-        postalCode: postal_code.value,
-        mobile: mobile.value
+        firstName: document.getElementById("first-name").value,
+        lastName: document.getElementById("last-name").value,
+        citySelect: document.getElementById("city-select").value,
+        lineOne: document.getElementById("line-one").value,
+        lineTwo: document.getElementById("line-two").value,
+        postalCode: document.getElementById("postal-code").value,
+        mobile: document.getElementById("mobile").value
     };
-    let dataJSON = JSON.stringify(data);
-    
+
+    // 🔹 Send user data to backend to generate PayHere payment JSON
     const response = await fetch("CheckOut", {
         method: "POST",
-        header: {
-            "Content-Type": "application/json"
-        },
-        body: dataJSON
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
     });
-    
-    const popup = new Notification();
-    if (response.ok) {
-        const json = await response.json();
-        if (json.status) {
-            console.log(json);
-            // PayHere Process
-            payhere.startPayment(json.payhereJson);
-        } else {
-            popup.error({
-                message: json.message
-            });
-        }
-    } else {
-        popup.error({
-            message: "Somthing went wrong. Please try again!"
+
+    if (!response.ok) {
+        console.error("Error generating PayHere data.");
+        return;
+    }
+
+    const json = await response.json();
+
+    if (!json.status) {
+        console.error(json.message);
+        return;
+    }
+
+    // 🔹 Start PayHere payment
+    payhere.startPayment(json.payhereJson);
+
+    // 🔸 THIS IS THE CRITICAL PART 🔸
+    payhere.onCompleted = async function (orderId) {
+        const popup = new Notification();
+        popup.success({
+            message: "Payment completed. OrderID:" + orderId
         });
+
+        // 🔹 This calls FinalizeOrder servlet after payment
+        await finalizeOrderAfterPayment(orderId);
+    };
+
+    payhere.onDismissed = function () {
+        console.log("Payment dismissed by user");
+    };
+
+    payhere.onError = function (error) {
+        console.error("Payment error: " + error);
+    };
+}
+
+
+async function finalizeOrderAfterPayment(orderId) {
+    let data = {
+        isCurrentAddress: document.getElementById("checkbox1").checked,
+        firstName: document.getElementById("first-name").value,
+        lastName: document.getElementById("last-name").value,
+        citySelect: document.getElementById("city-select").value,
+        lineOne: document.getElementById("line-one").value,
+        lineTwo: document.getElementById("line-two").value,
+        postalCode: document.getElementById("postal-code").value,
+        mobile: document.getElementById("mobile").value,
+        payhereOrderId: orderId
+    };
+
+    const response = await fetch("FinalizeOrder", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    });
+
+    const json = await response.json();
+
+    if (json.status) {
+        toastr.success("Order successfully placed!");
+    } else {
+        toastr.error({message: json.message});
+
     }
 }

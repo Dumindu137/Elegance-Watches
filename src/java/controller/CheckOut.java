@@ -43,196 +43,125 @@ import org.hibernate.criterion.Restrictions;
 @WebServlet(name = "CheckOut", urlPatterns = {"/CheckOut"})
 public class CheckOut extends HttpServlet {
 
-    private static final int SELECTOR_DEFAULT_VALUE = 0;
-    private static final int ORDER_PENDING = 5;
+    private static final int ORDER_PENDING = 1;
     private static final int WITHIN_COLOMBO = 1;
     private static final int OUT_OF_COLOMBO = 2;
-    private static final int RATING_DEFAULT_VALUE = 0;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new Gson();
-        JsonObject requJsonObject = gson.fromJson(request.getReader(), JsonObject.class);
+        JsonObject reqJson = gson.fromJson(request.getReader(), JsonObject.class);
 
-        boolean isCurrentAddress = requJsonObject.get("isCurrentAddress").getAsBoolean();
-        String firstName = requJsonObject.get("firstName").getAsString();
-        String lastName = requJsonObject.get("lastName").getAsString();
-        String citySelect = requJsonObject.get("citySelect").getAsString();
-        String lineOne = requJsonObject.get("lineOne").getAsString();
-        String lineTwo = requJsonObject.get("lineTwo").getAsString();
-        String postalCode = requJsonObject.get("postalCode").getAsString();
-        String mobile = requJsonObject.get("mobile").getAsString();
+        String citySelect = reqJson.get("citySelect").getAsString();
+        String lineOne = reqJson.get("lineOne").getAsString();
+        String lineTwo = reqJson.get("lineTwo").getAsString();
+        String postalCode = reqJson.get("postalCode").getAsString();
+        String mobile = reqJson.get("mobile").getAsString();
 
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-        Session s = sf.openSession();
-        Transaction tr = s.beginTransaction();
-
-        JsonObject responseObject = new JsonObject();
-        responseObject.addProperty("status", false);
         User user = (User) request.getSession().getAttribute("user");
+        JsonObject resJson = new JsonObject();
+        resJson.addProperty("status", false);
 
         if (user == null) {
-            responseObject.addProperty("message", "Session expired! Please log in again");
+            resJson.addProperty("message", "Session expired");
         } else {
-            if (isCurrentAddress) {
-                Criteria c1 = s.createCriteria(Address.class);
-                c1.add(Restrictions.eq("user", user));
-                c1.addOrder(Order.desc("id"));
-                if (c1.list().isEmpty()) {
-                    responseObject.addProperty("message",
-                            "You current address is not found. Please add a new address");
-                } else {
-                    Address address = (Address) c1.list().get(0);
-                    processCheckout(s, tr, user, address, responseObject);
-                }
-            } else {
-                if (firstName.isEmpty()) {
-                    responseObject.addProperty("message", "First Name is required.");
-                } else if (lastName.isEmpty()) {
-                    responseObject.addProperty("message", "Last Name is required.");
-                } else if (!Util.isInteger(citySelect)) {
-                    responseObject.addProperty("message", "Invalid city");
-                } else if (Integer.parseInt(citySelect) == CheckOut.SELECTOR_DEFAULT_VALUE) {
-                    responseObject.addProperty("message", "Invalid city");
-                } else {
-                    City city = (City) s.get(City.class, Integer.valueOf(citySelect));
-                    if (city == null) {
-                        responseObject.addProperty("message", "Invalid city name");
-                    } else {
-                        if (lineOne.isEmpty()) {
-                            responseObject.addProperty("message", "Address line one is required");
-                        } else if (lineTwo.isEmpty()) {
-                            responseObject.addProperty("message", "Address line two is required");
-                        } else if (postalCode.isEmpty()) {
-                            responseObject.addProperty("message", "Your postal code is required");
-                        } else if (!Util.isCodeValid(postalCode)) {
-                            responseObject.addProperty("message", "Invalid postal code number");
-                        } else if (mobile.isEmpty()) {
-                            responseObject.addProperty("message", "Mobile number is required");
-                        } else if (!Util.isMobileValid(mobile)) {
-                            responseObject.addProperty("message", "Invalid mobile number");
-                        } else {
-                            Address address = new Address();
-//                            address.setFirstName(firstName);
-//                            address.setLastName(lastName);
-                            address.setLine1(lineOne);
-                            address.setLine2(lineTwo);
-                            address.setCity(city);
-                            address.setPostal_code(postalCode);
-                            address.setMobile(mobile);
-                            address.setUser(user);
-                            s.save(address);
+            Session s = HibernateUtil.getSessionFactory().openSession();
+            Transaction tr = s.beginTransaction();
 
-                            processCheckout(s, tr, user, address, responseObject);
-                        }
-                    }
+            try {
+                City city = (City) s.get(City.class, Integer.parseInt(citySelect));
+// 🔍 Check if address already exists
+                Criteria addressCriteria = s.createCriteria(Address.class);
+                addressCriteria.add(Restrictions.eq("user", user));
+                addressCriteria.add(Restrictions.eq("line1", lineOne));
+                addressCriteria.add(Restrictions.eq("line2", lineTwo));
+                addressCriteria.add(Restrictions.eq("city", city));
+                addressCriteria.add(Restrictions.eq("postal_code", postalCode));
+                addressCriteria.add(Restrictions.eq("mobile", mobile));
+
+                Address address = (Address) addressCriteria.uniqueResult();
+
+                if (address == null) {
+                    // ➕ Insert new address
+                    address = new Address();
+                    address.setUser(user);
+                    address.setLine1(lineOne);
+                    address.setLine2(lineTwo);
+                    address.setCity(city);
+                    address.setPostal_code(postalCode);
+                    address.setMobile(mobile);
+                    s.save(address);
                 }
+
+                // Insert Order (but not order_items yet)
+                Orders order = new Orders();
+                order.setUser(user);
+                order.setAddress(address);
+                order.setCreatedAt(new Date());
+                int orderId = (int) s.save(order);
+
+                // Get cart & calculate amount
+                Criteria c = s.createCriteria(Cart.class);
+                c.add(Restrictions.eq("user", user));
+                List<Cart> cartList = c.list();
+
+                double amount = 0;
+                String items = "";
+
+                DeliveryTypes withinColombo = (DeliveryTypes) s.get(DeliveryTypes.class, WITHIN_COLOMBO);
+                DeliveryTypes outColombo = (DeliveryTypes) s.get(DeliveryTypes.class, OUT_OF_COLOMBO);
+
+                for (Cart cart : cartList) {
+                    amount += cart.getQty() * cart.getProduct().getPrice();
+
+                    if (city.getName().equalsIgnoreCase("Colombo")) {
+                        amount += cart.getQty() * withinColombo.getPrice();
+                    } else {
+                        amount += cart.getQty() * outColombo.getPrice();
+                    }
+
+                    items += cart.getProduct().getTitle() + " x " + cart.getQty() + ", ";
+                }
+
+                tr.commit();
+                s.close();
+
+                // PayHere Setup
+                String merchantId = "1223987";
+                String merchantSecret = "NzE2MDQ0NTk4MzcyMzQxNDQwOTM5NTA5NzQxNzM5MTc0ODM4MjA=";
+                String orderCode = "#000" + orderId; // ✅ Now real ID
+                String currency = "LKR";
+                String formattedAmount = new DecimalFormat("0.00").format(amount);
+                String hash = PayHere.generateMD5(merchantId + orderCode + formattedAmount + currency + PayHere.generateMD5(merchantSecret));
+
+                JsonObject payHereJson = new JsonObject();
+                payHereJson.addProperty("sandbox", true);
+                payHereJson.addProperty("merchant_id", merchantId);
+                payHereJson.addProperty("return_url", "");
+                payHereJson.addProperty("cancel_url", "");
+                payHereJson.addProperty("notify_url", "https://c7783bb71d24.ngrok-free.app/Elegance_Watches/VerifyPayments");
+                payHereJson.addProperty("order_id", orderCode);
+                payHereJson.addProperty("items", items);
+                payHereJson.addProperty("amount", formattedAmount);
+                payHereJson.addProperty("currency", currency);
+                payHereJson.addProperty("hash", hash);
+                payHereJson.addProperty("first_name", user.getFirst_name());
+                payHereJson.addProperty("last_name", user.getLast_name());
+                payHereJson.addProperty("email", user.getEmail());
+                payHereJson.addProperty("phone", mobile);
+                payHereJson.addProperty("address", lineOne + ", " + lineTwo);
+                payHereJson.addProperty("city", city.getName());
+                payHereJson.addProperty("country", "Sri Lanka");
+
+                resJson.addProperty("status", true);
+                resJson.add("payhereJson", payHereJson);
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
         response.setContentType("application/json");
-        String toJson = gson.toJson(responseObject);
-        response.getWriter().write(toJson);
+        response.getWriter().write(new Gson().toJson(resJson));
     }
-
-    private void processCheckout(Session s,
-            Transaction tr,
-            User user,
-            Address address,
-            JsonObject responseObject) {
-
-        try {
-            Orders orders = new Orders();
-            orders.setAddress(address);
-            orders.setCreatedAt(new Date());
-            orders.setUser(user);
-
-            int orderId = (int) s.save(orders);
-
-            Criteria c1 = s.createCriteria(Cart.class);
-            c1.add(Restrictions.eq("user", user));
-            List<Cart> cartList = c1.list();
-
-            OrderStatus orderStatus = (OrderStatus) s.get(OrderStatus.class, CheckOut.ORDER_PENDING);
-            DeliveryTypes withInColombo = (DeliveryTypes) s.get(DeliveryTypes.class, CheckOut.WITHIN_COLOMBO);
-            DeliveryTypes outOfColombo = (DeliveryTypes) s.get(DeliveryTypes.class, CheckOut.OUT_OF_COLOMBO);
-
-            double amount = 0;
-            String items = "";
-
-            for (Cart cart : cartList) {
-                amount += cart.getQty() * cart.getProduct().getPrice();
-
-                OrderItems orderItems = new OrderItems();
-
-                if (address.getCity().getName().equalsIgnoreCase("Colombo")) { // within colombo
-                    amount += cart.getQty() * withInColombo.getPrice();
-                    orderItems.setDeliveryTypes(withInColombo);
-                } else {// out of colombo
-                    amount += cart.getQty() * outOfColombo.getPrice();
-                    orderItems.setDeliveryTypes(outOfColombo);
-                }
-                items += cart.getProduct().getTitle() + " x " + cart.getQty() + ", ";
-
-                Product product = cart.getProduct();
-                orderItems.setOrderStatus(orderStatus);
-                orderItems.setOrders(orders);
-                orderItems.setProduct(product);
-                orderItems.setQty(cart.getQty());
-                orderItems.setRating(CheckOut.RATING_DEFAULT_VALUE); // 0
-
-                s.save(orderItems);
-
-                //update product qty
-                product.setQty(product.getQty() - cart.getQty());
-                s.update(product);
-
-                // delete cart item
-                s.delete(cart);
-            }
-
-            tr.commit();
-
-            //PayHere process
-            String merahantID = "";
-            String merchantSecret = "";
-            String orderID = "#000" + orderId;
-            String currency = "LKR";
-            String formattedAmount = new DecimalFormat("0.00").format(amount);
-            String merchantSecretMD5 = PayHere.generateMD5(merchantSecret);
-
-            String hash = PayHere.generateMD5(merahantID + orderID + formattedAmount + currency + merchantSecretMD5);
-
-            JsonObject payHereJson = new JsonObject();
-            payHereJson.addProperty("sandbox", true);
-            payHereJson.addProperty("merchant_id", merahantID);
-
-            payHereJson.addProperty("return_url", "");
-            payHereJson.addProperty("cancel_url", "");
-            payHereJson.addProperty("notify_url", "https://55954bec92ee.ngrok-free.app/Smarttrade/VerifyPayments");
-
-            payHereJson.addProperty("order_id", orderID);
-            payHereJson.addProperty("items", items);
-            payHereJson.addProperty("amount", formattedAmount);
-            payHereJson.addProperty("currency", currency);
-            payHereJson.addProperty("hash", hash);
-
-            payHereJson.addProperty("first_name", user.getFirst_name());
-            payHereJson.addProperty("last_name", user.getLast_name());
-            payHereJson.addProperty("email", user.getEmail());
-
-            payHereJson.addProperty("phone", address.getMobile());
-            payHereJson.addProperty("address", address.getLine1()+ ", " + address.getLine2());
-            payHereJson.addProperty("city", address.getCity().getName());
-            payHereJson.addProperty("country", "Sri Lanka");
-
-            responseObject.addProperty("status", true);
-            responseObject.addProperty("message", "Cechkout completed");
-            responseObject.add("payhereJson", new Gson().toJsonTree(payHereJson));
-            
-        } catch (Exception e) {
-            tr.rollback();
-        }
-    }
-
 }
