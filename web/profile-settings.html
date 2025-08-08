@@ -113,7 +113,7 @@
                             <a class="list-group-item list-group-item-action" data-toggle="list" href="#" role="tab">
                                 Product Listings
                             </a>
-                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#" role="tab">
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#PrevOrders" role="tab">
                                 Orders
                             </a>
                             <a class="list-group-item list-group-item-action" data-toggle="list" href="#" onclick="signOut();" role="tab">
@@ -441,6 +441,17 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!<!--  orders section -->
+                        <div class="tab-pane fade" id="PrevOrders" role="tabpanel">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Previous Orders</h5>
+                                    <ul class="order-details" id="ordersUL"></ul>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

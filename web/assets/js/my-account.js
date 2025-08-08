@@ -233,3 +233,57 @@ function showMessage(text, type) {
         msgDiv.textContent = "";
     }, 3000);
 }
+async function getPreviousOrders() {
+    console.log("js function for prev orders accessed");
+    const ordersContainer = document.getElementById("ordersUL");
+    ordersContainer.innerHTML = "<li>Loading orders...</li>";
+
+    try {
+        const response = await fetch("PreviousOrders");
+        if (!response.ok)
+            throw new Error("Network error");
+
+        const orders = await response.json();
+
+        if (orders.length === 0) {
+            ordersContainer.innerHTML = "<li>No previous orders found.</li>";
+            return;
+        }
+
+        ordersContainer.innerHTML = "";
+
+        orders.forEach(order => {
+            const li = document.createElement("li");
+            li.classList.add("mt--20");
+
+            // Since order.items does not exist, remove the items map
+            // Just display the order basics
+            li.innerHTML = `
+                <strong>Order #${order.id}</strong> - ${order.createdAt} <br>
+                <!-- No status or total because they don't exist in current JSON -->
+              
+            `;
+
+            ordersContainer.appendChild(li);
+        });
+    } catch (err) {
+        console.error("Error fetching orders:", err);
+        ordersContainer.innerHTML = "<li>Failed to load orders.</li>";
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const ordersTab = document.querySelector('a[href="#PrevOrders"]');
+    if (ordersTab) {
+        ordersTab.addEventListener('click', (e) => {
+            e.preventDefault();  // prevent default anchor behavior if you want
+            console.log("Orders tab clicked");
+            getPreviousOrders();
+
+            // If you want to manually activate the tab (if Bootstrap doesn't do it):
+            // $(ordersTab).tab('show');  // Requires jQuery & Bootstrap JS
+        });
+    }
+});
+

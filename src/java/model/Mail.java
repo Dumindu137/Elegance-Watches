@@ -19,11 +19,11 @@ import javax.mail.internet.MimeMessage;
  */
 public class Mail {
 
-    private static final String APP_EMAIL = "dumindusankalpa137@gmail.com";
-    private static final String APP_PASSWORD = "vwap zhnz even qrtm";
+    private static final String APP_EMAIL = "0684b26d92fa91";
+    private static final String APP_PASSWORD = "9af0141e77891a";
 
     public static void sendMail(String email, String subject, String htmlContent) {
-
+        System.out.println("called this mail.java class");
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");

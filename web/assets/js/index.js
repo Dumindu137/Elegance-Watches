@@ -144,15 +144,35 @@ async function loadAllToProductPage() {
     }
 }
 
-async function addToCart(productId, qty) {
-    const response = await fetch(`AddToCart?prId=${productId}&qty=${qty}`);
-    const json = await response.json();
-    if (json.status) {
-        alert("Product added to cart!");
-    } else {
-        alert("Failed to add product to cart.");
-    }
-}
+//async function addToCart(productId, qty) {
+////    const response = await fetch(`AddToCart?prId=${productId}&qty=${qty}`);
+////    const json = await response.json();
+////    if (json.status) {
+////        alert("Product added to cart!");
+////    } else {
+////        alert("Failed to add product to cart.");
+////    }
+//    console.log("Sending add-to-cart request:", productId, qty);
+//    const popup = new Notification();// link notification js in single-product.html
+//    const response = await fetch("AddToCart?prId=" + productId + "&qty=" + qty);
+//    if (response.ok) {
+//        const json = await response.json(); // await response.text();
+//        if (json.status) {
+//            popup.success({
+//                message: json.message
+//            });
+//        } else {
+//            popup.error({
+//                message: "Something went wrong. Try again"
+//            });
+//
+//        }
+//    } else {
+//        popup.error({
+//            message: "Something went wrong. Try again"
+//        });
+//    }
+//}
 
 
 
@@ -208,24 +228,24 @@ function loadNewArrivals(products) {
 
 
 async function addToCart(productId, qty) {
-    const popup = new Notification();// link notification js in single-product.html
+    
     const response = await fetch("AddToCart?prId=" + productId + "&qty=" + qty);
     if (response.ok) {
         const json = await response.json(); // await response.text();
         if (json.status) {
-            popup.success({
-                message: json.message
-            });
+//            popup.success({
+//                message: json.message
+//            });
+            toastr.error({message: json.message});
         } else {
-            popup.error({
-                message: "Something went wrong. Try again"
-            });
+//            popup.error({
+//                message: "Something went wrong. Try again"
+//            });
+            toastr.error("Something went wrong. Try again");
 
         }
     } else {
-        popup.error({
-            message: "Something went wrong. Try again"
-        });
+        toastr.error("Something went wrong. Try again");
     }
 }
 

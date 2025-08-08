@@ -50,7 +50,7 @@ async function loadCartItems(showSuccessToast = true) {
                         <p class="mb-2">Rs. ${cart.product.price.toFixed(2)}</p>
                         <div class="d-flex align-items-center">
                             <label class="mr-2 mb-0">Qty:</label>
-                            <input type="number" class="form-control quantity-input" style="width: 80px;" value="${cart.qty}">
+                            <input type="number" class="form-control quantity-input" style="width: 80px;" value="${cart.qty}" readonly>
                         </div>
                     </div>
                 </div>

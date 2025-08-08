@@ -1,6 +1,6 @@
 payhere.onCompleted = function onCompleted(orderId) {
     const popup = new Notification();
- 
+
     toastr.success("Payment completed. OrderID:" + orderId);
 
     finalizeOrderAfterPayment(orderId);
@@ -113,29 +113,36 @@ async function loadCheckoutData() {
             st_tbody.appendChild(st_subtotal_tr);
 
             let shipping_charges = 0;
-            city_select.addEventListener("change", (e) => {
+
+            function updateShippingAndTotal() {
                 let cityName = city_select.options[city_select.selectedIndex].innerHTML;
                 if (cityName === "Colombo") {
-                    shipping_charges = item_count * deliveryTypes[0].price;
+                    shipping_charges = deliveryTypes[0].price;
                 } else {
-                    // out of colombo
-                    shipping_charges = item_count * deliveryTypes[1].price;
+                    shipping_charges = deliveryTypes[1].price;
                 }
 
                 st_order_shipping_tr.querySelector("#st-product-shipping-charges")
-                        .innerHTML = new Intl.NumberFormat(
-                                "en-US",
-                                {minimumFractionDigits: 2})
+                        .innerHTML = new Intl.NumberFormat("en-US", {minimumFractionDigits: 2})
                         .format(shipping_charges);
+
                 st_tbody.appendChild(st_order_shipping_tr);
 
                 st_order_total_tr.querySelector("#st-order-total-amount")
-                        .innerHTML = new Intl.NumberFormat(
-                                "en-US",
-                                {minimumFractionDigits: 2})
+                        .innerHTML = new Intl.NumberFormat("en-US", {minimumFractionDigits: 2})
                         .format(shipping_charges + total);
+
                 st_tbody.appendChild(st_order_total_tr);
+            }
+
+            // Run the calculation immediately after loading the data:
+            updateShippingAndTotal();
+
+            // Also update on city select change:
+            city_select.addEventListener("change", () => {
+                updateShippingAndTotal();
             });
+            
         } else {
             if (json.message === "empty-cart") {
                 popup.error({
@@ -236,9 +243,26 @@ async function finalizeOrderAfterPayment(orderId) {
     const json = await response.json();
 
     if (json.status) {
-        toastr.success("Order successfully placed!");
-    } else {
-        toastr.error({message: json.message});
+    toastr.success("Order successfully placed!");
 
-    }
+    // Clear form fields
+    document.getElementById("checkbox1").checked = false;
+    document.getElementById("first-name").value = "";
+    document.getElementById("last-name").value = "";
+    document.getElementById("city-select").value = 0;
+    document.getElementById("line-one").value = "";
+    document.getElementById("line-two").value = "";
+    document.getElementById("postal-code").value = "";
+    document.getElementById("mobile").value = "";
+
+    // Clear cart display (adjust based on your HTML)
+    const stTbody = document.getElementById("st-tbody");
+    if (stTbody) stTbody.innerHTML = "";
+
+    // Optionally reset any other UI states or totals here
+} else {
+    toastr.error({message: json.message});
 }
+
+}
+

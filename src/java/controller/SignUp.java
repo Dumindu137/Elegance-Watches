@@ -94,7 +94,7 @@ public class SignUp extends HttpServlet {
                     @Override
                     public void run() {
 
-                        //Mail.sendMail(email, "Elegance Watches - Verification", "<h1>" + verificationCode + "</h1>");
+                        Mail.sendMail(email, "Elegance Watches - Verification", "<h1>" + verificationCode + "</h1>");
                         System.out.println("📬 Trying to send verification email to " + email);
 
                         try {
