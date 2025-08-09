@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import model.Util;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
@@ -48,9 +49,9 @@ public class Signin2 extends HttpServlet {
         } else if (password.isEmpty()) {
             responseObject.addProperty("message", "Password can not be empty");
         } else {
-//            SessionFactory sf = HibernateUtil.getSessionFactory();
-//            Session s = sf.openSession();
-            Session s = HibernateUtil.getSessionFactory().openSession();
+            SessionFactory sf = HibernateUtil.getSessionFactory();
+            Session s = sf.openSession();
+//            Session s = HibernateUtil.getSessionFactory().openSession();
 
             Criteria c = s.createCriteria(User.class);
 

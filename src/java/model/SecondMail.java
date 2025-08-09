@@ -7,13 +7,14 @@ import java.util.Properties;
 public class SecondMail {
 
     public static void sendMail(String recipient, String subject, String content) throws MessagingException {
-        final String fromEmail = "dumindusankalpa137@gmail.com";
-        final String password = "vwapzhnzevenqrtm"; // Use App Password if using Gmail
+
+        final String fromEmail = "0684b26d92fa91";
+        final String password = "9af0141e77891a";
 
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.host", "smtp.mailtrap.io");
         properties.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(properties, new Authenticator() {
@@ -29,5 +30,6 @@ public class SecondMail {
         message.setText(content);
 
         Transport.send(message);
+        System.out.println("Email sent successfully to " + recipient);
     }
 }

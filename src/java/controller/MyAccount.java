@@ -150,14 +150,16 @@ public class MyAccount extends HttpServlet {
                     u1.setPassword(finalPassword);
                     City city = (City) s.load(City.class, cityId);
 
-                    // ✅ Check for existing address
                     Criteria ac = s.createCriteria(Address.class);
                     ac.add(Restrictions.eq("user", u1));
-                    Address address = (Address) ac.uniqueResult();
+                    List<Address> addressList = ac.list();
 
-                    if (address == null) {
+                    Address address;
+                    if (addressList.isEmpty()) {
                         address = new Address();
                         address.setUser(u1);
+                    } else {
+                        address = addressList.get(0); // or whichever you want to pick as "primary"
                     }
 
                     address.setLine1(lineOne);

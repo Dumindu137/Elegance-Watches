@@ -7,11 +7,23 @@ public class HibernateUtil {
 
     private static final SessionFactory sessionFactory;
 
+//    static {
+//        try {
+//            Configuration configure = new Configuration();
+//            configure.configure("hibernate.cfg.xml");
+//            sessionFactory = configure.buildSessionFactory();
+//        } catch (Throwable ex) {
+//            System.err.println("Initial SessionFactory creation failed." + ex);
+//            throw new ExceptionInInitializerError(ex);
+//        }
+//    }
+    
     static {
         try {
             sessionFactory = new Configuration().configure().buildSessionFactory();
         } catch (Throwable ex) {
-            System.err.println("Initial SessionFactory creation failed." + ex);
+            System.err.println("Initial SessionFactory creation failed.");
+            ex.printStackTrace(); // <- This will show the real error
             throw new ExceptionInInitializerError(ex);
         }
     }

@@ -69,9 +69,10 @@ public class SignUp extends HttpServlet {
             if (!criteria.list().isEmpty()) {
                 ResponseObject.addProperty("message", "User with this email already exists !");
             } else {
-                // insert
+                // Generate verification code
                 final String verificationCode = Util.generateCode();
 
+                // Create and save user
                 User u = new User();
                 u.setFirst_name(firstName);
                 u.setLast_name(lastName);
@@ -84,42 +85,37 @@ public class SignUp extends HttpServlet {
                 session.save(u);
                 session.getTransaction().commit();
 
-                //gpt      
+                // Store email in session
                 HttpSession ses = request.getSession();
                 ses.setAttribute("email", email);
-                //
 
-                //send mail
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        Mail.sendMail(email, "Elegance Watches - Verification", "<h1>" + verificationCode + "</h1>");
-                        System.out.println("📬 Trying to send verification email to " + email);
-
-                        try {
-
-                            SecondMail.sendMail(
-                                    email,
-                                    "Elegance Watches - Email Verification",
-                                    "<div style='font-family:sans-serif'><h2>Your Verification Code</h2><p>Enter the following code to verify your email:</p><h1 style='color:#3366cc'>" + verificationCode + "</h1></div>"
-                            );
-                        } catch (MessagingException ex) {
-                            Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-
+                // Send verification email asynchronously
+                new Thread(() -> {
+                    try {
+                        // Use only SecondMail (Mailtrap) for sending
+                        SecondMail.sendMail(
+                                email,
+                                "Elegance Watches - Email Verification",
+                                "<div style='font-family:sans-serif'>"
+                                + "<h2>Your Verification Code</h2>"
+                                + "<p>Enter the following code to verify your email:</p>"
+                                + "<h1 style='color:#3366cc'>" + verificationCode + "</h1>"
+                                + "</div>"
+                        );
+                        System.out.println("Verification email sent to " + email);
+                    } catch (MessagingException ex) {
+                        Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, "Email sending failed", ex);
                     }
                 }).start();
 
                 ResponseObject.addProperty("status", true);
-                ResponseObject.addProperty("message", "Registration Success ! Please Check Your Email For The Verification");
+                ResponseObject.addProperty("message", "Registration Success! Please Check Your Email For The Verification Code.");
             }
             session.close();
         }
 
         String responseText = gson.toJson(ResponseObject);
         response.setContentType("application/json");
-
         response.getWriter().write(responseText);
     }
 }
